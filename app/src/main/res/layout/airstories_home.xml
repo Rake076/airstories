@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity">
+
+
+
+
+    <FrameLayout
+        android:tag="unique_tag"
+        android:id="@+id/fragment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="StoriesFragment"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/bottom_navigation"/>
+
+
+<!--    <FrameLayout-->
+<!--        android:tag="writing_tag"-->
+<!--        android:id="@+id/fragment_writing"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:name="WritingFragment"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_above="@id/bottom_navigation"/>-->
+
+
+
+<!--    <FrameLayout
+        android:id="@+id/fragment_readinglist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="StoriesFragment"/>
+
+        -->
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/bottom_navigation_menu"/>
+    </RelativeLayout>
