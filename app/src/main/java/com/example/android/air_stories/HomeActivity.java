@@ -48,15 +48,11 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
     final ArrayList<ShortStories> shortStoryObject = new ArrayList<>();
 
 
-
-
     public ArrayList<ShortStories> getShortStoriesData(){
         return shortStoryObject;
     }
 
-//    public String getStringuserdata(){
-//        return stringuserdata;
-//    }
+
 
     public User getUserdata(){
         return userData;
@@ -95,32 +91,6 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
 
         listCall = jsonPlaceHolderApi.getShortStories();
 
-//        listCall.enqueue(new Callback<List<ShortStories>>() {
-//            @Override
-//            public void onResponse(Call<List<ShortStories>> call, Response<List<ShortStories>> response) {
-//
-//                if(!response.isSuccessful()){
-//                    textView.setText("Code " + response.code());
-//                    return;
-//                }
-//
-//                List<ShortStories> stories = response.body();
-//
-//                for (ShortStories Stories : stories){
-//
-//                    shortStoryObject.add(new ShortStories (Stories.getshortID(), Stories.getShortTitle(),
-//                            Stories.getShortStory(), Stories.getShortGenre(), Stories.getAppCount(), Stories.getShortDescription(), Stories.getUsername()));
-////                    textView.append(data);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<ShortStories>> call, Throwable t) {
-//
-//
-//            }
-//
-//        });
 
 
         networkCall();
@@ -163,6 +133,11 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override public boolean onNavigationItemSelected(@Nullable MenuItem item) {
@@ -198,12 +173,6 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
                 }
             };
 
-
-
-
-
-
-
     public void openFragment(int id, Fragment fragment, String tag) {
 
         Fragment removeFragment = getSupportFragmentManager().findFragmentByTag(globalTag);;
@@ -217,22 +186,6 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
         transaction.replace(id, fragment, tag);
         transaction.commit();
     }
-
-//    public void openWriteFragment(Fragment fragment) {
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
-////                .add(R.id.fragment_writing, new WritingFragment(), "writeFrag")
-//                .addToBackStack(null);
-//        transaction.replace(R.id.fragment_layout, fragment, "writeFrag");
-//        transaction.commit();
-//    }
-//
-//    public void openSearchFragment(Fragment fragment) {
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
-//                //.add(R.id.fragment_stories, new StoriesFragment(), "shortStoryFrag")
-//                .addToBackStack(null);
-//        transaction.replace(R.id.fragment_layout, fragment, "shortStoryFrag");
-//        transaction.commit();
-//    }
 
     public void setUserData(String Data) throws JSONException {
 

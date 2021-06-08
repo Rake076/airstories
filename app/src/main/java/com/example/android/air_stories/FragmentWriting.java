@@ -4,9 +4,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,9 +22,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -28,7 +34,10 @@ import com.example.android.air_stories.Model.User;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
 
 import static android.app.Activity.RESULT_OK;
@@ -66,8 +75,12 @@ public class FragmentWriting extends Fragment implements Serializable, AdapterVi
     TextInputEditText title_edit_text, description_edit_text;
     TextView textview;
 
+    Bitmap bitmap;
     ImageView imageView;
     Uri imageUri;
+
+
+    Intent intent;
 
 //    Intent intent = new Intent(getActivity(), StoryWritingActivity.class);
     public FragmentWriting(){
@@ -126,14 +139,22 @@ public class FragmentWriting extends Fragment implements Serializable, AdapterVi
             next_btn = rootView.findViewById(R.id.next_btn);
             edit_btn = rootView.findViewById(R.id.edit_btn);
             addCover_btn = rootView.findViewById(R.id.addCoverButton);
-
+            imageView = rootView.findViewById(R.id.write_image);
 
             type_dropdown = rootView.findViewById(R.id.type_spinner);
             genre_dropdown = rootView.findViewById(R.id.genre_spinner);
             genre_dropdown.setOnItemSelectedListener(this);
 
 
-//            imageView = rootView.findViewById(R.id.short_image).setOnClickListener();
+
+
+            imageView.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view) {
+                        openGallery();
+                    }
+                });
+
 //            user = homeActivity.getUserdata();
             ArrayAdapter<String> type_adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, types);
             ArrayAdapter<String> genre_adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, genres);
@@ -146,6 +167,10 @@ public class FragmentWriting extends Fragment implements Serializable, AdapterVi
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(bitmap == null){
+                    Toast.makeText(getContext(), "Please select an image", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if(title_edit_text.getText().toString().equals("")){
 
                     title_edit_text.setError("Title cannot be empty");
@@ -176,13 +201,15 @@ public class FragmentWriting extends Fragment implements Serializable, AdapterVi
                 });
 
 
-//                intent.putExtra("genre", genre);
-//                intent.putExtra("title", title);
-//                intent.putExtra("description", description);
-//                intent.putExtra("type", type);
-//                intent.putExtra("username", user.getUsername());
-//                intent.putExtra("userID", user.getUserID());
-//                startActivity(intent);
+                intent = new Intent(getContext(), WritingShortActivity.class);
+                intent.putExtra("genre", genre);
+                intent.putExtra("title", title);
+                intent.putExtra("description", description);
+                intent.putExtra("type", type);
+                intent.putExtra("username", user.getUsername());
+                intent.putExtra("userID", user.getUserID());
+                intent.putExtra("shortImage", bitmap);
+                startActivity(intent);
 
             }
         });
@@ -209,23 +236,46 @@ public class FragmentWriting extends Fragment implements Serializable, AdapterVi
                 openGallery();
             }
         });
+
         return rootView;
     }
 
     // Getting image from gallery try 2.0
     private void openGallery() {
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-//        photoPickerIntent.setType("image/*");
-        startActivityForResult(photoPickerIntent, 100);
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == 100){
-            imageUri = data.getData();
-            imageView.setImageURI(imageUri);
+        Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        // ******** code for crop image
+        i.putExtra("crop", "true");
+        i.putExtra("aspectX", 2);
+        i.putExtra("aspectY", 3);
+        i.putExtra("outputX", 200);
+        i.putExtra("outputY", 300);
+        try {
+            i.putExtra("return-data", true);
+            startActivityForResult(
+                    Intent.createChooser(i, "Select Picture"), 0);
+        }catch (ActivityNotFoundException ex){
+            ex.printStackTrace();
         }
     }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==0 && resultCode == Activity.RESULT_OK){
+            try {
+                Bundle bundle = data.getExtras();
+                bitmap = bundle.getParcelable("data");
+                imageView.setImageBitmap(bitmap);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    }
+
 
 
 
@@ -246,30 +296,6 @@ public class FragmentWriting extends Fragment implements Serializable, AdapterVi
     // Try 2.0 ends.
 
 
-    // Getting image from gallery try 1.0
-
-//    public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
-//        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-//        switch(requestCode) {
-//            case 0:
-//                if(resultCode == RESULT_OK){
-//                    Uri selectedImage = imageReturnedIntent.getData();
-//                    intent.putExtra("image", selectedImage);
-//                }
-//                break;
-//            case 1:
-//                if(resultCode == RESULT_OK){
-//                    Uri selectedImage = imageReturnedIntent.getData();
-//                    intent.putExtra("image", selectedImage);
-////                    imageview.setImageURI(selectedImage);
-//                }
-//                break;
-//        }
-//    }
-
-
-
-
     private void setHomeActivity(){
         homeActivity = (HomeActivity) getActivity();
     }
@@ -277,6 +303,12 @@ public class FragmentWriting extends Fragment implements Serializable, AdapterVi
     private void setUserData(){
             user = homeActivity.getUserdata();
     }
+
+
+
+
+
+
 
 
     @Override

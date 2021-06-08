@@ -57,7 +57,7 @@
             android:layout_height="150dp"
             android:background="#e0e0e0">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/write_image"
                 android:layout_width="100dp"
                 android:layout_height="150dp"

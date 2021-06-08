@@ -58,7 +58,8 @@ public interface INodeJS {
                                           @Part("shortStory") String shortStory,
                                           @Part("shortGenre") String shortGenre,
                                           @Part("shortDescription") String shortDescription,
-                                           @Part("cover") MultipartBody.Part image);
+//                                           @Part("cover") MultipartBody.Part image);
+                                           @Part MultipartBody.Part image);
 
 
 }

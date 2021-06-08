@@ -50,11 +50,17 @@ import com.example.android.air_stories.Retrofit.INodeJS;
 import com.example.android.air_stories.Retrofit.RetrofitClient;
 import com.google.android.material.button.MaterialButton;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 
@@ -75,13 +81,12 @@ public class WritingShortActivity extends AppCompatActivity {
 
     Uri imageUri;
 
+    MultipartBody.Part fileBody;
 
+    Bitmap bmp;
     Retrofit retrofit;
     INodeJS myAPI;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
-
-    MultipartBody.Part file;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,39 +96,39 @@ public class WritingShortActivity extends AppCompatActivity {
         Intent intent = getIntent();
         initToolbar();
 
-//         title = intent.getStringExtra("title");
-//         description = intent.getStringExtra("description");
-//         type = intent.getStringExtra("type");
-//         genre = intent.getStringExtra("genre");
-//         username = intent.getStringExtra("username");
-//         userID = intent.getIntExtra("userID", 0);
-//        Bitmap bmp = intent.getE;
-
-        ShortStories shortStory = (ShortStories) intent.getSerializableExtra("Story");
+         title = intent.getStringExtra("title");
+         description = intent.getStringExtra("description");
+         type = intent.getStringExtra("type");
+         genre = intent.getStringExtra("genre");
+         username = intent.getStringExtra("username");
+         userID = intent.getIntExtra("userID", 0);
+         bmp = intent.getParcelableExtra("shortImage");
 
          title_textview = findViewById(R.id.title_textview);
          title_textview.setText(title);
-
-//        ShortStories shortStory = new ShortStories(12, title, story, genre, 0, description, "abc");
 
         // Init API
         retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
 
 
+        File coverImage = persistImage(bmp, "cover");
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), coverImage);
+        fileBody = MultipartBody.Part.createFormData("cover", coverImage.getName(), requestFile);
+
          publish_btn = findViewById(R.id.publish_btn);
          publish_btn.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
                  story = mEditText.getHtml();
-                 submitShortStory(userID, title, story, genre, description, file);
+                 submitShortStory(userID, title, story, genre, description, fileBody);
              }
          });
 
     }
 
-    private void submitShortStory(int userID, String title, String shortStory, String shortGenre, String shortDescription, MultipartBody.Part file) {
-        compositeDisposable.add(myAPI.submitShortStories(userID, title, shortStory, shortGenre, shortDescription, this.file)
+    private void submitShortStory(int userID, String title, String shortStory, String shortGenre, String shortDescription, MultipartBody.Part fileBody) {
+        compositeDisposable.add(myAPI.submitShortStories(userID, title, shortStory, shortGenre, shortDescription, fileBody)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<ResponseBody>() {
@@ -131,10 +136,9 @@ public class WritingShortActivity extends AppCompatActivity {
                     public void accept(ResponseBody responseBody) throws Exception {
                         if(responseBody.toString().contains("successfully")){
                             Toast.makeText(getApplicationContext(), responseBody.toString(), Toast.LENGTH_SHORT).show();
-
                         }
                         else{
-                            Toast.makeText(getApplicationContext(), "Error: "+ responseBody.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Story has been uploaded! - "+ responseBody.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
 //                    @Override
@@ -144,7 +148,22 @@ public class WritingShortActivity extends AppCompatActivity {
                 }));
     }
 
+    private File persistImage(Bitmap bitmap, String name) {
+        File filesDir = getFilesDir();
+        File imageFile = new File(filesDir, name + ".jpg");
 
+        OutputStream os;
+        try {
+            os = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            os.flush();
+            os.close();
+            return imageFile;
+        } catch (Exception e) {
+            Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
+        }
+        return imageFile;
+    }
 
     // Older submitShortStory that works without image.
 
@@ -176,8 +195,8 @@ public class WritingShortActivity extends AppCompatActivity {
         IARE_ToolItem listBullet = new ARE_ToolItem_ListBullet();
         IARE_ToolItem hr = new ARE_ToolItem_Hr();
 //        IARE_ToolItem link = new ARE_ToolItem_Link();
-//        IARE_ToolItem subscript = new ARE_ToolItem_Subscript();
-//        IARE_ToolItem superscript = new ARE_ToolItem_Superscript();
+        IARE_ToolItem subscript = new ARE_ToolItem_Subscript();
+        IARE_ToolItem superscript = new ARE_ToolItem_Superscript();
         IARE_ToolItem left = new ARE_ToolItem_AlignmentLeft();
         IARE_ToolItem center = new ARE_ToolItem_AlignmentCenter();
         IARE_ToolItem right = new ARE_ToolItem_AlignmentRight();
@@ -193,8 +212,8 @@ public class WritingShortActivity extends AppCompatActivity {
         mToolbar.addToolbarItem(listBullet);
         mToolbar.addToolbarItem(hr);
 //        mToolbar.addToolbarItem(link);
-//        mToolbar.addToolbarItem(subscript);
-//        mToolbar.addToolbarItem(superscript);
+        mToolbar.addToolbarItem(subscript);
+        mToolbar.addToolbarItem(superscript);
         mToolbar.addToolbarItem(left);
         mToolbar.addToolbarItem(center);
         mToolbar.addToolbarItem(right);
