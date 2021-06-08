@@ -1,11 +1,15 @@
 package com.example.android.air_stories;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -20,7 +24,7 @@ import com.google.android.material.textfield.TextInputEditText;
 public class StoryInfoEditingActivity extends AppCompatActivity {
     String title, genre, type, description, username;
     int userID;
-    MaterialButton next_btn, edit_btn;
+    MaterialButton next_btn, edit_btn, addCover_btn;
     String[] genres = new String[]{"Action", "Comedy", "Thriller", "Horror", "Adventure", "Crime and Mystery", "Fantasy", "Historical", "Romance", "Satire", "Science Fiction", "Cyberpunk", "Speculative", "Thriller", "Western"};
 //    String[] types = new String[]{"Short", "Complete"};
     Spinner genre_dropdown, type_dropdown;
@@ -28,8 +32,10 @@ public class StoryInfoEditingActivity extends AppCompatActivity {
     User user;
     TextInputEditText title_edit_text, description_edit_text;
     TextView textview, topTextView;
-
+    ImageView imageView;
     ShortStories shortStory;
+
+    Bitmap bitmap;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +48,8 @@ public class StoryInfoEditingActivity extends AppCompatActivity {
         username = intent.getStringExtra("username");
         userID = intent.getIntExtra("userID", 0);
 
+        addCover_btn = findViewById(R.id.addCoverButton);
+        imageView = findViewById(R.id.write_image);
 
         topTextView = findViewById(R.id.topTextView);
         topTextView.setText("Edit Story");
@@ -53,18 +61,6 @@ public class StoryInfoEditingActivity extends AppCompatActivity {
         next_btn = findViewById(R.id.next_btn);
         edit_btn = findViewById(R.id.edit_btn);
         edit_btn.setText("Back");
-
-
-//        type_dropdown = findViewById(R.id.type_spinner);
-//        genre_dropdown = findViewById(R.id.genre_spinner);
-//        genre_dropdown.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
-
-//        ArrayAdapter<String> type_adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, types);
-//        ArrayAdapter<String> genre_adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, genres);
-//
-//        genre_dropdown.setAdapter(genre_adapter);
-//        type_dropdown.setAdapter(type_adapter);
-
 
 
         next_btn.setOnClickListener(new View.OnClickListener() {
@@ -105,24 +101,61 @@ public class StoryInfoEditingActivity extends AppCompatActivity {
         });
 
 
-        edit_btn.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getApplicationContext(), UserStoriesActivity.class);
-//                intent.putExtra("username", user.getUsername());
-//                intent.putExtra("userID", user.getUserID());
-                finish();
-
-//                Bundle bundle = new Bundle();
-//                bundle.putInt("userID", user.getUserID());
-//                intent.putExtras(bundle);
-
-//                startActivity(intent);
+                openGallery();
             }
         });
 
-        //get the spinner from the xml.
+        addCover_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                openGallery();
+            }
+        });
+
+        edit_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
+
+    // Getting image from gallery try 2.0
+    private void openGallery() {
+        Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        // ******** code for crop image
+        i.putExtra("crop", "true");
+        i.putExtra("aspectX", 2);
+        i.putExtra("aspectY", 3);
+        i.putExtra("outputX", 200);
+        i.putExtra("outputY", 300);
+        try {
+            i.putExtra("return-data", true);
+            startActivityForResult(
+                    Intent.createChooser(i, "Select Picture"), 0);
+        }catch (ActivityNotFoundException ex){
+            ex.printStackTrace();
+        }
+    }
 
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==0 && resultCode == Activity.RESULT_OK){
+            try {
+                Bundle bundle = data.getExtras();
+                bitmap = bundle.getParcelable("data");
+                imageView.setImageBitmap(bitmap);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
     }
 }

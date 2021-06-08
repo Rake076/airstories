@@ -55,13 +55,6 @@ public class UserStoriesActivity extends AppCompatActivity {
         userID = intent.getIntExtra("userID", 0);
         networkCall();
 
-//        Intent intent2 = getIntent();
-//        Bundle id = intent.getExtras();
-//
-//        userID = (int) id.get("userID");
-
-
-
         listView = (ListView)findViewById(R.id.short_story_list_view);
         username_textview = findViewById(R.id.username_textview);
         username_textview.setText(username);

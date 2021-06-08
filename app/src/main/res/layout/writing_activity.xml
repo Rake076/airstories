@@ -21,6 +21,7 @@
         android:text="Title your Story"/>
 
 
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,6 +47,15 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:text="Publish"/>
+
+    <TextView
+        android:layout_below="@id/scrollview"
+        android:layout_margin="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/publish_btn"
+        android:id="@+id/text_count"
+        android:text="0/200"/>
 
     <LinearLayout
         android:id="@+id/bottombar"

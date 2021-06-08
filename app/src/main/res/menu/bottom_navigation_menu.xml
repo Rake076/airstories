@@ -22,9 +22,9 @@
         android:icon="@drawable/ic_baseline_create_24"
         android:title="Write"/>
     <item
-        android:id="@+id/notification_btn"
+        android:id="@+id/user_btn"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_notifications_24"
+        android:icon="@drawable/ic_baseline_person_24"
         android:title="Notifications"/>
 
 </menu>

@@ -89,11 +89,8 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
             e.printStackTrace();
         }
 
-        listCall = jsonPlaceHolderApi.getShortStories();
 
-
-
-        networkCall();
+//        networkCall();
         BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
 
@@ -112,7 +109,6 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
                 }
 
                 List<ShortStories> stories = response.body();
-
 
                 shortStoryObject.clear();
                 for (ShortStories Stories : stories) {
@@ -143,6 +139,7 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
                 @Override public boolean onNavigationItemSelected(@Nullable MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.search_btn:
+                            networkCall();
                             fragment = getSupportFragmentManager().findFragmentByTag("StoryFrag");
                             if (fragment == null || !fragment.isVisible()) {
                                 // not exist
@@ -150,24 +147,22 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
                                 openFragment(R.id.fragment_layout, StoriesFragment.newInstance("", ""), "StoryFrag");
                                 globalTag = "StoryFrag";
                             }
-                            else if (fragment != null || fragment.isVisible()){
-                                networkCall();
-                            }
                             return true;
+
                         case R.id.write_btn:
-
                             fragment = getSupportFragmentManager().findFragmentByTag("writeFrag");
-
                             if (fragment == null || !fragment.isVisible()) {
-                                // not exist
-
                                 openFragment(R.id.fragment_layout, FragmentWriting.newInstance("", ""), "writeFrag");
-
                                 globalTag = "writeFrag";
-
                             }
-
                             return true;
+
+                        case R.id.user_btn:
+                            fragment = getSupportFragmentManager().findFragmentByTag("UserFrag");
+                            if(fragment == null  || !fragment.isVisible()) {
+                                openFragment(R.id.fragment_layout, FragmentUser.newInstance("", ""), "UserFrag");
+                                globalTag = "UserFrag";
+                            }
                     }
                     return false;
                 }
@@ -181,8 +176,6 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
         }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//                .add(R.id.fragment_stories, new StoriesFragment(), "shortStoryFrag")
-//                .addToBackStack(null);
         transaction.replace(id, fragment, tag);
         transaction.commit();
     }

@@ -100,7 +100,6 @@ public class StoryEditingActivity extends AppCompatActivity{
                 @Override
                 public void onClick(View view) {
                     story = mEditText.getHtml();
-//                    submitShortStory(userID, title, story, genre, description, file);
                 }
             });
 
@@ -121,33 +120,12 @@ public class StoryEditingActivity extends AppCompatActivity{
                                 Toast.makeText(getApplicationContext(), "Error: "+ responseBody.toString(), Toast.LENGTH_SHORT).show();
                             }
                         }
-//                    @Override
-//                    public void accept(String s) throws Exception {
-//
-//                    }
                     }));
         }
 
 
 
-        // Older submitShortStory that works without image.
 
-//    private void submitShortStory(int userID, String title, String shortStory, String shortGenre, String shortDescription) {
-//        compositeDisposable.add(myAPI.submitShortStories(userID, title, shortStory, shortGenre, shortDescription)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Consumer<String>() {
-//                    @Override
-//                    public void accept(String s) throws Exception {
-//                        if(s.contains("successfully")){
-//                            Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
-//
-//                        }
-//                        else
-//                            Toast.makeText(getApplicationContext(), "Error: "+s, Toast.LENGTH_SHORT).show();
-//                    }
-//                }));
-//    }
 
         private void initToolbar() {
             mToolbar = this.findViewById(R.id.areToolbar);

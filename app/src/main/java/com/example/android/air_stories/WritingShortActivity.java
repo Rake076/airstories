@@ -6,8 +6,10 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.TextWatcher;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.Menu;
@@ -71,7 +73,7 @@ public class WritingShortActivity extends AppCompatActivity {
     private AREditText mEditText;
     private boolean scrollerAtEnd;
 
-    TextView title_textview;
+    TextView title_textview, textcount_textview;
     MaterialButton publish_btn;
     String title, description, story, type, genre, username = "abc";
     int userID = 0;
@@ -107,6 +109,27 @@ public class WritingShortActivity extends AppCompatActivity {
          title_textview = findViewById(R.id.title_textview);
          title_textview.setText(title);
 
+         textcount_textview = findViewById(R.id.text_count);
+         mEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    textcount_textview.setText(mEditText.getText().length() + "/200");
+                }
+
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    //String s = search.getText().toString();
+    //                setTheTextView();
+                }
+            });
+
+
         // Init API
         retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
@@ -120,8 +143,13 @@ public class WritingShortActivity extends AppCompatActivity {
          publish_btn.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
-                 story = mEditText.getHtml();
-                 submitShortStory(userID, title, story, genre, description, fileBody);
+                 if(mEditText.getText().toString().length() < 200) {
+                     mEditText.setError("Story must be at least 200 characters long");
+                 }
+                 else{
+                     story = mEditText.getHtml();
+                     submitShortStory(userID, title, story, genre, description, fileBody);
+                 }
              }
          });
 
@@ -164,25 +192,6 @@ public class WritingShortActivity extends AppCompatActivity {
         }
         return imageFile;
     }
-
-    // Older submitShortStory that works without image.
-
-//    private void submitShortStory(int userID, String title, String shortStory, String shortGenre, String shortDescription) {
-//        compositeDisposable.add(myAPI.submitShortStories(userID, title, shortStory, shortGenre, shortDescription)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Consumer<String>() {
-//                    @Override
-//                    public void accept(String s) throws Exception {
-//                        if(s.contains("successfully")){
-//                            Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
-//
-//                        }
-//                        else
-//                            Toast.makeText(getApplicationContext(), "Error: "+s, Toast.LENGTH_SHORT).show();
-//                    }
-//                }));
-//    }
 
     private void initToolbar() {
         mToolbar = this.findViewById(R.id.areToolbar);
