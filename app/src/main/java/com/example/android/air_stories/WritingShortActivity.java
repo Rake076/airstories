@@ -1,7 +1,9 @@
 package com.example.android.air_stories;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -118,7 +120,15 @@ public class WritingShortActivity extends AppCompatActivity {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    textcount_textview.setText(mEditText.getText().length() + "/200");
+
+                    if(mEditText.getText().length()<200){
+                        textcount_textview.setTextColor(Color.parseColor("#FF1100"));
+                    }
+                    else if(mEditText.getText().length()>200){
+                        textcount_textview.setTextColor(Color.parseColor("#000000"));
+                    }
+                    textcount_textview.setText(mEditText.getText().length() + "");
+
                 }
 
 

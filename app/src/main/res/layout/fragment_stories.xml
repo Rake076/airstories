@@ -41,32 +41,46 @@
                 android:fontFamily="@font/roboto_light"
                 />
 
-            <TextView
-                android:id="@+id/username_textview"
+<!--            <TextView-->
+<!--                android:id="@+id/username_textview"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="18sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:hint="U"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:fontFamily="@font/roboto_light"-->
+<!--                android:layout_centerVertical="true"/>-->
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switch1"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:switchMinWidth="18dp"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:hint="U"
-                android:textColor="@color/black"
-                android:layout_alignParentRight="true"
                 android:fontFamily="@font/roboto_light"
-                android:layout_centerVertical="true"/>
+                android:checked="true"
+                android:textOff="OFF"
+                android:textOn="ON"/>
+
+
+
 
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="95dp">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:layout_margin="16dp"
                 android:layout_alignParentTop="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="8dp"
+                android:id="@+id/search_edit_text_layout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:startIconDrawable="@drawable/ic_baseline_search_24"
                 android:hint="Search">
@@ -83,16 +97,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/lighterGrey"
-                android:layout_alignParentBottom="true"/>
+                android:layout_below="@id/search_edit_text_layout"/>
         </RelativeLayout>
-<!--
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Search"
-            android:id="@+id/short_data_textview"/>
-            -->
-
 
 
     </LinearLayout>

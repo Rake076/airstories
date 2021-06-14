@@ -28,12 +28,12 @@ import retrofit2.http.Url;
 public class AdapterShort extends ArrayAdapter<ShortStories> {
 
 //      private int mColorResourceId;
-        private ArrayList<ShortStories> shortStories;
+//        private ArrayList<ShortStories> shortStories;
 
 //        public StoryAdapter (Context mcontext, ArrayList<ShortStories> shortStories){
         public AdapterShort(Context mcontext, ArrayList<ShortStories> shortStories){
             super(mcontext, 0, shortStories);
-            this.shortStories = shortStories;
+//            this.shortStories = shortStories;
         }
 
 
@@ -71,33 +71,11 @@ public class AdapterShort extends ArrayAdapter<ShortStories> {
             appCountTextView.setText("" + shortStories.getAppCount());
 
             imageView = convertView.findViewById(R.id.image);
-//            imageView.setImageBitmap(R.drawable.clown);
-//            imageView.setBackgroundResource(R.drawable.clown);
-//
-//        URL url = null;
-//            try {
-//                if (shortStories.getCoverImage()!=null){
-//                    url = new URL(shortStories.getCoverImage());
-//                    Log.e("Image", shortStories.getCoverImage());
-//                }
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//            }
 
 
         Picasso.with(getContext())
                 .load(shortStories.getCoverImage())
                 .into(imageView);
-//                Bitmap bmp;
-//            try {
-//                bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-//                imageView.setImageBitmap(bmp);
-//            } catch (IOException e) {
-//                 e.printStackTrace();
-//            }
-
-
-
 
 
             return convertView;

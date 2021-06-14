@@ -9,7 +9,7 @@ import java.net.URL;
 
 public class ShortStories implements Serializable {
 //    @SerializedName("shortID")
-    public int shortID;
+    int shortID;
 
 //    @SerializedName("shortTitle")
     String shortTitle;
@@ -30,9 +30,9 @@ public class ShortStories implements Serializable {
     String coverImage;
 
 
-    public ShortStories (int shortID, String shortTitle, String shortStory, String shortGenre, int appCount, String shortDescription, String username, String coverImage){
+    public ShortStories (int short_id, String shortTitle, String shortStory, String shortGenre, int appCount, String shortDescription, String username, String coverImage){
 
-        this.shortID = shortID;
+        this.shortID = short_id;
         this.shortTitle = shortTitle;
         this.shortStory = shortStory;
         this.shortGenre = shortGenre;

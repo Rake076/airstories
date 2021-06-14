@@ -56,8 +56,8 @@ public class UserStoriesActivity extends AppCompatActivity {
         networkCall();
 
         listView = (ListView)findViewById(R.id.short_story_list_view);
-        username_textview = findViewById(R.id.username_textview);
-        username_textview.setText(username);
+//        username_textview = findViewById(R.id.username_textview);
+//        username_textview.setText(username);
 
 
 

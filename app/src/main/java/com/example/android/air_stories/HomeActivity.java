@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.android.air_stories.Model.ShortStories;
+import com.example.android.air_stories.Model.Stories;
 import com.example.android.air_stories.Model.User;
 import com.example.android.air_stories.Retrofit.INodeJS;
 import com.example.android.air_stories.Retrofit.RetrofitClient;
@@ -42,16 +43,22 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     Call<List<ShortStories>> listCall;
+    Call<List<Stories>> storyListCall;
     Retrofit Bretrofit = RetrofitClient.getClient();
     INodeJS jsonPlaceHolderApi = Bretrofit.create(INodeJS.class);
 
     final ArrayList<ShortStories> shortStoryObject = new ArrayList<>();
+    final ArrayList<Stories> StoryObject = new ArrayList<>();
 
 
     public ArrayList<ShortStories> getShortStoriesData(){
         return shortStoryObject;
     }
 
+
+    public ArrayList<Stories> getStoriesData(){
+        return StoryObject;
+    }
 
 
     public User getUserdata(){
@@ -76,15 +83,27 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.airstories_home);
 
+        Intent intent = getIntent();
+        if(SaveSharedPreference.getUserName(HomeActivity.this).length() == 0)
+        {
+            // call Login Activity
+            Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(loginIntent);
+        }
+        else
+        {
+            // Stay at the current activity.
+        }
+
         searchEditText = findViewById(R.id.search_edit_text);
 //        textView = findViewById(R.id.short_data_textview);
 
-        Intent intent = getIntent();
 
-        stringuserdata = intent.getStringExtra("stringuserdata");
+
+//        stringuserdata = intent.getStringExtra("stringuserdata");
 
         try {
-            setUserData(stringuserdata);
+            setUserData(SaveSharedPreference.getJSONString(HomeActivity.this));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -97,7 +116,7 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
 
     }
 
-    public void networkCall() {
+    public void shortNetworkCall() {
         listCall = jsonPlaceHolderApi.getShortStories();
         listCall.enqueue(new Callback<List<ShortStories>>() {
             @Override
@@ -129,6 +148,43 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
     }
 
 
+    public void storyNetworkCall() {
+        storyListCall = jsonPlaceHolderApi.getStories();
+        storyListCall.enqueue(new Callback<List<Stories>>() {
+            @Override
+            public void onResponse(Call<List<Stories>> call, Response<List<Stories>> response) {
+
+                if (!response.isSuccessful()) {
+                    textView.setText("Code " + response.code());
+                    return;
+                }
+
+                List<Stories> stories = response.body();
+
+                StoryObject.clear();
+                for (Stories Stories : stories) {
+
+//                    int story_id, String story_title, String story_description, String story_genre, int status,
+//                    int likes, int readings, int chapters, String username, String coverImage
+
+                    StoryObject.add(new Stories(Stories.getStory_id(), Stories.getStory_title(),
+                            Stories.getStory_description(), Stories.getStory_genre(), Stories.getStatus(),
+                            Stories.getLikes(), Stories.getReadings(), Stories.getChapters(), Stories.getUsername(), Stories.getCoverImage()));
+//                    textView.append(data);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Stories>> call, Throwable t) {
+
+            }
+
+
+
+        });
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -139,12 +195,12 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
                 @Override public boolean onNavigationItemSelected(@Nullable MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.search_btn:
-                            networkCall();
+                            shortNetworkCall();
+                            storyNetworkCall();
                             fragment = getSupportFragmentManager().findFragmentByTag("StoryFrag");
                             if (fragment == null || !fragment.isVisible()) {
                                 // not exist
-//                                openSearchFragment(StoriesFragment.newInstance("", ""));
-                                openFragment(R.id.fragment_layout, StoriesFragment.newInstance("", ""), "StoryFrag");
+                                openFragment(R.id.fragment_layout, FragmentStories.newInstance("", ""), "StoryFrag");
                                 globalTag = "StoryFrag";
                             }
                             return true;

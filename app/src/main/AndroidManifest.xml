@@ -19,10 +19,10 @@
         <activity
             android:name=".LoginActivity"
             android:theme="@style/Theme.Airstories.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
 
         <activity
@@ -43,6 +43,13 @@
             android:name=".DescriptionShortActivity"
             android:theme="@style/Theme.Airstories.NoActionBar">
         </activity>
+
+
+        <activity
+            android:name=".DescriptionStoryActivity"
+            android:theme="@style/Theme.Airstories.NoActionBar">
+        </activity>
+
 
 
         <activity
@@ -72,6 +79,20 @@
 
         <activity
             android:name=".StoryEditingActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:theme="@style/Theme.Airstories.NoActionBar">
+        </activity>
+
+
+        <activity
+            android:name=".JournalsActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:theme="@style/Theme.Airstories.NoActionBar">
+        </activity>
+
+
+        <activity
+            android:name=".JournalWritingActivity"
             android:windowSoftInputMode="stateVisible|adjustResize"
             android:theme="@style/Theme.Airstories.NoActionBar">
         </activity>

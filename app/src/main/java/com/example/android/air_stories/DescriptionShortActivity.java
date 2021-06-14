@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.android.air_stories.Model.ShortStories;
+import com.example.android.air_stories.Model.Stories;
 import com.google.android.material.button.MaterialButton;
 import com.squareup.picasso.Picasso;
 
@@ -26,38 +27,39 @@ public class DescriptionShortActivity extends AppCompatActivity implements Seria
         super.onCreate(savedInstanceState);
         setContentView(R.layout.airstories_short_intro);
 
+        boolean isShort = false;
         Intent intent = getIntent();
-        ShortStories shortStory = (ShortStories) intent.getSerializableExtra("Story");
 
-        title = findViewById(R.id.short_title_textview);
-        title.setText("" + shortStory.getShortTitle());
+            ShortStories shortStory = (ShortStories) intent.getSerializableExtra("shortStory");
 
-        appCount = findViewById(R.id.app_count_textview);
-        appCount.setText("" + shortStory.getAppCount());
+            title = findViewById(R.id.short_title_textview);
+            title.setText("" + shortStory.getShortTitle());
 
-        description = findViewById(R.id.short_description_textview);
-        description.setText("" + shortStory.getShortDescription());
+            appCount = findViewById(R.id.app_count_textview);
+            appCount.setText("" + shortStory.getAppCount());
 
-        username = findViewById(R.id.username_textview);
-        username.setText("" + shortStory.getUsername());
+            description = findViewById(R.id.short_description_textview);
+            description.setText("" + shortStory.getShortDescription());
 
-        imageView = findViewById(R.id.short_image);
-        Picasso.with(getApplicationContext())
-                .load(shortStory.getCoverImage())
-                .into(imageView);
+            username = findViewById(R.id.username_textview);
+            username.setText("" + shortStory.getUsername());
 
-        readbtn = findViewById(R.id.read_btn);
+            imageView = findViewById(R.id.short_image);
+            Picasso.with(getApplicationContext())
+                    .load(shortStory.getCoverImage())
+                    .into(imageView);
 
-        readbtn.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(getApplicationContext(), ShortReadingActivity.class);
-                        intent.putExtra("ShortStory", shortStory);
-                        startActivity(intent);
+            readbtn = findViewById(R.id.read_btn);
 
-                    }
-                });
+            readbtn.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), ShortReadingActivity.class);
+                    intent.putExtra("ShortStory", shortStory);
+                    startActivity(intent);
 
+                }
+            });
 
     }
 }

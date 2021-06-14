@@ -141,6 +141,9 @@ public class FragmentWriting extends Fragment implements Serializable, AdapterVi
             addCover_btn = rootView.findViewById(R.id.addCoverButton);
             imageView = rootView.findViewById(R.id.write_image);
 
+            TextView username_textview = rootView.findViewById(R.id.username_textview);
+            username_textview.setText(user.getUsername());
+
             type_dropdown = rootView.findViewById(R.id.type_spinner);
             genre_dropdown = rootView.findViewById(R.id.genre_spinner);
             genre_dropdown.setOnItemSelectedListener(this);

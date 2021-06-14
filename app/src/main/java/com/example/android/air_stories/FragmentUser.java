@@ -49,6 +49,7 @@ public class FragmentUser extends Fragment {
     User user;
     HomeActivity homeActivity;
 
+    int userID;
     TextView username;
     MaterialButton journal_btn, editProfile_btn;
     //    Intent intent = new Intent(getActivity(), StoryWritingActivity.class);
@@ -88,13 +89,24 @@ public class FragmentUser extends Fragment {
 
         username = rootView.findViewById(R.id.username_textview);
         username.setText(user.getUsername());
+        userID = user.getUserID();
 
+        MaterialButton logout_btn = rootView.findViewById(R.id.logout_btn);
+        logout_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SaveSharedPreference.clear(getActivity());
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
         journal_btn = rootView.findViewById(R.id.journal_btn);
         journal_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-//                Intent intent = (getActivity(), Journa);
-//                startActivity(intent);
+                Intent intent = new Intent(getContext(), JournalsActivity.class);
+                intent.putExtra("userID", userID);
+                startActivity(intent);
             }
         });
 

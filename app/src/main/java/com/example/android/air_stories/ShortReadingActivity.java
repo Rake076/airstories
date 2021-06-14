@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.chinalwb.are.render.AreTextView;
 import com.example.android.air_stories.Model.ShortStories;
+import com.example.android.air_stories.Model.Stories;
 
 public class ShortReadingActivity extends AppCompatActivity {
 
@@ -23,17 +24,16 @@ public class ShortReadingActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        ShortStories shortStory = (ShortStories) intent.getSerializableExtra("ShortStory");
-
-
-
-        title_textview = findViewById(R.id.short_title_textview);
-        title_textview.setText("" + shortStory.getShortTitle());
-
 
         short_story_textview = (AreTextView) findViewById(R.id.short_story_textview);
-//        short_story_textview.setText("" + shortStory.getShortStory());
-        short_story_textview.fromHtml("" + shortStory.getShortStory());
+        title_textview = findViewById(R.id.short_title_textview);
+
+
+
+            ShortStories shortStory = (ShortStories) intent.getSerializableExtra("ShortStory");
+
+            title_textview.setText("" + shortStory.getShortTitle());
+            short_story_textview.fromHtml("" + shortStory.getShortStory());
 
 
 

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/imagecover"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="264dp"
+                android:background="#2b2b2b"/>
+            <ImageView
+                android:id="@+id/short_image"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="150dp"
+                android:layout_height="200dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/clown"
+                android:background="@color/black"/>
+        </RelativeLayout>
+
+        <TextView
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:id="@+id/short_title_textview"
+            android:layout_below="@id/imagecover"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Ye to Title hoga"
+            android:textSize="18sp"/>
+
+
+
+        <TextView
+            android:textColor="@color/black"
+            android:id="@+id/username_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/short_title_textview"
+            android:text="John Wick"
+            android:fontFamily="@font/roboto_light"
+            android:textSize="16sp"/>
+
+        <RelativeLayout
+            android:layout_centerHorizontal="true"
+            android:id="@+id/app_count_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/username_textview"
+            android:layout_marginBottom="16dp">
+
+            <ImageView
+                android:id="@+id/app_count_image"
+                android:scaleType="fitXY"
+                android:layout_gravity="center_vertical"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_baseline_thumb_up_24"/>
+            <TextView
+                android:id="@+id/app_count_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:fontFamily="@font/roboto_light"
+                android:hint="100"
+                android:textSize="11dp"
+                android:paddingLeft="4dp"
+                android:textColor="@color/black"
+                android:layout_toRightOf="@id/app_count_image"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/description_layout"
+            android:layout_below="@id/app_count_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="@color/black"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:background="@color/white"
+                android:paddingHorizontal="8dp"
+                android:translationZ="1dp"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:fontFamily="@font/roboto_light"
+                android:textSize="12sp"/>
+            <View
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#363636"/>
+        </RelativeLayout>
+
+        <TextView
+            android:textColor="@color/black"
+            android:layout_below="@id/description_layout"
+            android:id="@+id/short_description_textview"
+            android:layout_margin="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:text="This is a description This is a description This is a description This is a description This is a description This is a description This is a description This is a description This is a description This is a description "
+            android:textSize="16sp"/>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/read_btn"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:layout_below="@id/short_description_textview"
+            android:layout_centerHorizontal="true"
+            android:text="Read"/>
+
+
+        <RelativeLayout
+            android:layout_marginTop="16dp"
+            android:id="@+id/chapter_layout"
+            android:layout_below="@id/read_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="@color/black"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chapters"
+                android:background="@color/white"
+                android:paddingHorizontal="8dp"
+                android:translationZ="1dp"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:fontFamily="@font/roboto_light"
+                android:textSize="12sp"/>
+            <View
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#363636"/>
+        </RelativeLayout>
+
+
+
+        <ListView
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/chapter_listview"
+            android:layout_below="@id/chapter_layout"
+            android:nestedScrollingEnabled="true"/>
+
+
+    </RelativeLayout>
+
+</ScrollView>

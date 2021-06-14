@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:are="http://schemas.android.com/apk/res-auto" >
 
-    <TextView
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLines="1"
@@ -15,10 +15,10 @@
         android:layout_marginBottom="16dp"
         android:textSize="16sp"
         android:fontFamily="@font/roboto_regular"
-        android:id="@+id/title_textview"
+        android:id="@+id/journal_title_edit_text"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Title your Story"/>
+        android:hint="Title your Journal"/>
 
 
 
@@ -27,19 +27,19 @@
         android:layout_height="wrap_content"
         android:id="@+id/scrollview"
         android:layout_marginBottom="100dp"
-        android:layout_below="@id/title_textview"
+        android:layout_below="@id/journal_title_edit_text"
         android:background="@android:color/white">
 
-            <com.chinalwb.are.AREditText
-                android:id="@+id/arEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="top|left"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="16dp"
-                android:hint="Your Story goes here"
-                android:textSize="16sp" />
-        </ScrollView>
+        <com.chinalwb.are.AREditText
+            android:id="@+id/arEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|left"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
+            android:hint="Your Story goes here"
+            android:textSize="16sp" />
+    </ScrollView>
 
     <com.google.android.material.button.MaterialButton
         android:layout_width="wrap_content"

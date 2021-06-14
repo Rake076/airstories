@@ -1,6 +1,9 @@
 package com.example.android.air_stories;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +19,8 @@ import com.example.android.air_stories.Retrofit.INodeJS;
 import com.example.android.air_stories.Retrofit.RetrofitClient;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.json.JSONObject;
@@ -51,6 +56,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.airstories_login);
 
+
+        Intent intent = getIntent();
+
         // Init API
         Retrofit retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
@@ -66,10 +74,23 @@ public class LoginActivity extends AppCompatActivity {
         btn_login.setOnClickListener(new OnClickListener(){
             @Override
             public void onClick(View view) {
-                if(edit_email.getText().toString().contains("@"))
-                    loginUser(edit_email.getText().toString(), edit_password.getText().toString());
+                boolean connected = false;
+                ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+                if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                        connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+                    //we are connected to a network
+                    connected = true;
+                }
                 else
-                    edit_email.setError("Invalid Email");
+                    connected = false;
+                if(connected) {
+                    if(edit_email.getText().toString().contains("@"))
+                        loginUser(edit_email.getText().toString(), edit_password.getText().toString());
+                    else
+                        edit_email.setError("Invalid Email");
+                } else
+                    Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -98,10 +119,17 @@ public class LoginActivity extends AppCompatActivity {
                             if(s.contains("email")){
 
 
-//                                Toast.makeText(LoginActivity.this, "Login Successful "+ user.getUsername(), Toast.LENGTH_SHORT).show();
+                                JSONObject jsonObject = new JSONObject(s);
+                                SaveSharedPreference.setUserName(getApplicationContext(), jsonObject.getString("username"));
+                                SaveSharedPreference.setJSONString(getApplicationContext(), s);
+//                                Toast.makeText(LoginActivity.this, "Login Successful " + jsonObject.getString("username"), Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                                intent.putExtra("stringuserdata", s);
+//                                intent.putExtra("stringuserdata", s);
                                 startActivity(intent);
+
+
+
+
                             }
                             else
                                 Toast.makeText(LoginActivity.this, ""+s, Toast.LENGTH_SHORT).show();

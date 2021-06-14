@@ -1,6 +1,9 @@
 package com.example.android.air_stories.Retrofit;
 
+import com.example.android.air_stories.Model.Chapters;
+import com.example.android.air_stories.Model.Journals;
 import com.example.android.air_stories.Model.ShortStories;
+import com.example.android.air_stories.Model.Stories;
 
 import java.util.List;
 
@@ -31,24 +34,35 @@ public interface INodeJS {
                                     @Field("password")String password);
 
 
-
     @GET("shortStories")
         Call<List<ShortStories>> getShortStories();
+
+    @GET("stories")
+    Call<List<Stories>> getStories();
 
 
     @GET("shortStories/userStories")
     Call<List<ShortStories>> getUserShortStories(@Query("userID")int userID);
 
 
-//    @Multipart
+    @GET("stories/chapters")
+    Call<List<Chapters>> getStoryChapters(@Query("story_id")int story_id);
+
+    @GET("journals")
+    Call<List<Journals>> getUserJournals(@Query("userID")int userID);
+
+    @POST("journals")
+    @FormUrlEncoded
+    Observable<String> submitJournals(@Field("userID") int userID,
+                                      @Field("journal") String journal,
+                                        @Field("journal_title") String journal_title);
+
+    //    @Multipart
 //    @POST("user/updateprofile")
 //    Observable<ResponseBody> updateProfile(@Part("user_id") RequestBody id,
 //                                           @Part("full_name") RequestBody fullName,
 //                                           @Part MultipartBody.Part image,
 //                                           @Part("other") RequestBody other);
-
-
-
 
     @Multipart
     @POST("shortStories")
