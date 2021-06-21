@@ -204,7 +204,13 @@ public class FragmentWriting extends Fragment implements Serializable, AdapterVi
                 });
 
 
-                intent = new Intent(getContext(), WritingShortActivity.class);
+                if (type == "Short"){
+                    intent = new Intent(getContext(), WritingShortActivity.class);
+                }
+                else{
+                    intent = new Intent(getContext(), WritingStoryActivity.class);
+                }
+
                 intent.putExtra("genre", genre);
                 intent.putExtra("title", title);
                 intent.putExtra("description", description);
@@ -280,25 +286,6 @@ public class FragmentWriting extends Fragment implements Serializable, AdapterVi
     }
 
 
-
-
-    //Multipart body thingy
-    //pass it like this
-//    Image file = new Image();
-//    RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-//
-//    // MultipartBody.Part is used to send also the actual file name
-//    MultipartBody.Part body =
-//            MultipartBody.Part.createFormData("image", file.getName(), requestFile);
-//
-//    // add another part within the multipart request
-//    RequestBody fullName =
-//            RequestBody.create(MediaType.parse("multipart/form-data"), "Your Name");
-//    service.updateProfile(id, fullName, body, other);
-
-    // Try 2.0 ends.
-
-
     private void setHomeActivity(){
         homeActivity = (HomeActivity) getActivity();
     }
@@ -318,11 +305,13 @@ public class FragmentWriting extends Fragment implements Serializable, AdapterVi
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 //            genre = genres[genre_dropdown.getSelectedItemPosition()];
         genre = (String) genre_dropdown.getSelectedItem();
+        type = (String) type_dropdown.getSelectedItem();
         Log.v("Dropdown", genre + "222");
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-            genre = (String) genre_dropdown.getSelectedItem();
+        type = (String) type_dropdown.getSelectedItem();
+        genre = (String) genre_dropdown.getSelectedItem();
     }
 }

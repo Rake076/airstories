@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.chinalwb.are.AREditor;
+import com.chinalwb.are.render.AreTextView;
 import com.example.android.air_stories.Model.Journals;
 
 import java.util.ArrayList;
@@ -36,15 +38,17 @@ public class AdapterJournal extends  ArrayAdapter<Journals>{
 
 
 
-            TextView titleTextView, descriptionTextView, dateTextView;
+            TextView  titleTextView, dateTextView;
+//            AreTextView descriptionTextView;
 
             Journals journals = getItem(position);
 
             titleTextView = convertView.findViewById(R.id.journal_title_textview);
             titleTextView.setText(journals.getJournal_title());
 
-            descriptionTextView = convertView.findViewById(R.id.journal_description_textview);
-            descriptionTextView.setText(journals.getJournal());
+//            descriptionTextView = convertView.findViewById(R.id.journal_description_textview);
+//            descriptionTextView.fromHtml(""+journals.getJournal());
+//            descriptionTextView.fromHtml(""+journals.getJournal());
 
             dateTextView = convertView.findViewById(R.id.journal_date_textview);
             dateTextView.setText(journals.getJournal_date());

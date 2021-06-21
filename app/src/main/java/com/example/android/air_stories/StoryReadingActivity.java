@@ -1,5 +1,5 @@
 package com.example.android.air_stories;
-
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.chinalwb.are.render.AreTextView;
+import com.example.android.air_stories.Model.Chapters;
 import com.example.android.air_stories.Model.ShortStories;
 import com.example.android.air_stories.Model.Stories;
 import com.example.android.air_stories.Model.User;
@@ -32,10 +33,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class ShortReadingActivity extends AppCompatActivity {
+public class StoryReadingActivity extends AppCompatActivity {
+
 
     TextView title_textview;
-    AreTextView short_story_textview;
+    AreTextView story_textview;
 
     Bitmap bmap;
     Drawable myDrawable;
@@ -63,34 +65,26 @@ public class ShortReadingActivity extends AppCompatActivity {
         myAPI = retrofit.create(INodeJS.class);
 
         Intent intent = getIntent();
-        ShortStories shortStory = (ShortStories) intent.getSerializableExtra("ShortStory");
+        Chapters chapter = (Chapters) intent.getSerializableExtra("chapter");
         User user = (User) intent.getSerializableExtra("user");
-        isLiked(user.getUserID(), shortStory.getshortID());
+        Stories story = (Stories) intent.getSerializableExtra("story");
+
+//        isLiked(user.getUserID(), story.getStory_id());
 
         like_btn = findViewById(R.id.like_btn);
         comment_btn = findViewById(R.id.comment_btn);
 
 
-        short_story_textview = (AreTextView) findViewById(R.id.short_story_textview);
+        story_textview = (AreTextView) findViewById(R.id.short_story_textview);
         title_textview = findViewById(R.id.short_title_textview);
 
-        title_textview.setText("" + shortStory.getShortTitle());
-        short_story_textview.fromHtml("" + shortStory.getShortStory());
+        title_textview.setText("" + chapter.getChapter_name());
+        story_textview.fromHtml("" + chapter.getChapter_text());
 
 
         like_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Drawable drawable = like_btn.getDrawable();
-                if(!isFilled){
-                    like(user.getUserID(), shortStory.getshortID());
-                    like_btn.setImageResource(R.drawable.ic_baseline_thumb_up_24);
-                    isFilled = true;
-                } else {
-                    unlike(user.getUserID(), shortStory.getshortID());
-                    like_btn.setImageResource(R.drawable.ic_outline_thumb_up_24);
-                    isFilled = false;
-                }
 
             }
         });
@@ -125,15 +119,14 @@ public class ShortReadingActivity extends AppCompatActivity {
                 .subscribe(new Consumer<String>() {
                                @Override
                                public void accept(String s) throws Exception {
-//                                   if (s.contains("liked")) {
-//                                       Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
-//                                   } else {
-//                                       Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
-//                                   }
-                                       Toast.makeText(getApplicationContext(), "Short Story has been liked", Toast.LENGTH_SHORT).show();
+                                   if (s.contains("liked")) {
+                                       Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+                                   } else {
+                                       Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+                                   }
                                }
                            }
-        ));
+                ));
     }
 
     public void unlike(int userID, int shortID){
@@ -143,17 +136,14 @@ public class ShortReadingActivity extends AppCompatActivity {
                 .subscribe(new Consumer<String>() {
                                @Override
                                public void accept(String s) throws Exception {
-//                                   if (s.contains("unliked")) {
-//                                       Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
-//                                   } else {
-//                                       Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
-//                                   }
-                                   Toast.makeText(getApplicationContext(), "Short Story has been unliked", Toast.LENGTH_SHORT).show();
+                                   if (s.contains("unliked")) {
+                                       Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+                                   } else {
+                                       Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+                                   }
                                }
                            }
                 ));
     }
-
-
 
 }

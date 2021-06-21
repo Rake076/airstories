@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.android.air_stories.Model.ShortStories;
 import com.example.android.air_stories.Model.Stories;
+import com.example.android.air_stories.Model.User;
 import com.google.android.material.button.MaterialButton;
 import com.squareup.picasso.Picasso;
 
@@ -27,10 +28,10 @@ public class DescriptionShortActivity extends AppCompatActivity implements Seria
         super.onCreate(savedInstanceState);
         setContentView(R.layout.airstories_short_intro);
 
-        boolean isShort = false;
         Intent intent = getIntent();
 
             ShortStories shortStory = (ShortStories) intent.getSerializableExtra("shortStory");
+            User user = (User) intent.getSerializableExtra("user");
 
             title = findViewById(R.id.short_title_textview);
             title.setText("" + shortStory.getShortTitle());
@@ -56,6 +57,7 @@ public class DescriptionShortActivity extends AppCompatActivity implements Seria
                 public void onClick(View view) {
                     Intent intent = new Intent(getApplicationContext(), ShortReadingActivity.class);
                     intent.putExtra("ShortStory", shortStory);
+                    intent.putExtra("user", user);
                     startActivity(intent);
 
                 }

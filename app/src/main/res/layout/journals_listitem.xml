@@ -41,19 +41,19 @@
             android:textColor="@android:color/black"
             android:hint="20/9/2021" />
 
-        <TextView
-            android:maxLines="1"
-            android:layout_marginTop="8dp"
-            android:ellipsize="end"
-            android:id="@+id/journal_description_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/journal_title_textview"
-            android:fontFamily="@font/roboto_light"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
-            android:hint="I woke up, got ready and then went"/>
+<!--        <com.chinalwb.are.render.AreTextView-->
+<!--            android:maxLines="1"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:ellipsize="end"-->
+<!--            android:id="@+id/journal_description_textview"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/journal_title_textview"-->
+<!--            android:fontFamily="@font/roboto_light"-->
+<!--            android:textAppearance="?android:textAppearanceMedium"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textColor="@android:color/black"-->
+<!--            android:hint="I woke up, got ready and then went"/>-->
 
     </RelativeLayout>
 </RelativeLayout>

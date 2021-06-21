@@ -49,6 +49,7 @@ import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Underline;
 import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Video;
 import com.chinalwb.are.styles.toolitems.IARE_ToolItem;
 import com.example.android.air_stories.Model.ShortStories;
+import com.example.android.air_stories.Model.Stories;
 import com.example.android.air_stories.Model.User;
 import com.example.android.air_stories.Retrofit.INodeJS;
 import com.example.android.air_stories.Retrofit.RetrofitClient;
@@ -58,6 +59,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
@@ -67,27 +69,19 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
+import retrofit2.http.Part;
 
-public class WritingShortActivity extends AppCompatActivity {
-
-
+public class ChapterWritingActivity extends AppCompatActivity{
     private IARE_Toolbar mToolbar;
     private AREditText mEditText;
     private boolean scrollerAtEnd;
 
-    TextView title_textview, textcount_textview;
+    TextView textcount_textview;
+    EditText chapter_title_edit;
     MaterialButton publish_btn;
-    String title, description, story, type, genre, username = "abc";
-    int userID = 0;
+    String chapter_text, chapter_title;
+    int story_id = 0;
 
-
-    ImageView imageView;
-
-    Uri imageUri;
-
-    MultipartBody.Part fileBody;
-
-    Bitmap bmp;
     Retrofit retrofit;
     INodeJS myAPI;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -95,114 +89,90 @@ public class WritingShortActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.writing_activity);
+        setContentView(R.layout.writing_story_activity);
 
         Intent intent = getIntent();
         initToolbar();
 
-         title = intent.getStringExtra("title");
-         description = intent.getStringExtra("description");
-         type = intent.getStringExtra("type");
-         genre = intent.getStringExtra("genre");
-         username = intent.getStringExtra("username");
-         userID = intent.getIntExtra("userID", 0);
-         bmp = intent.getParcelableExtra("shortImage");
 
-         title_textview = findViewById(R.id.title_textview);
-         title_textview.setText(title);
+        Stories story = (Stories) intent.getSerializableExtra("story");
+        story_id = story.getStory_id();
 
-         textcount_textview = findViewById(R.id.text_count);
-         mEditText.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        chapter_title_edit = findViewById(R.id.chapter_title_edit);
+        textcount_textview = findViewById(R.id.text_count);
+        mEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+                if(mEditText.getText().length()<200){
+                    textcount_textview.setTextColor(Color.parseColor("#FF1100"));
                 }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                    if(mEditText.getText().length()<200){
-                        textcount_textview.setTextColor(Color.parseColor("#FF1100"));
-                    }
-                    else if(mEditText.getText().length()>200){
-                        textcount_textview.setTextColor(Color.parseColor("#000000"));
-                    }
-                    textcount_textview.setText(mEditText.getText().length() + "");
-
+                else if(mEditText.getText().length()>200){
+                    textcount_textview.setTextColor(Color.parseColor("#000000"));
                 }
+                textcount_textview.setText(mEditText.getText().length() + "");
+            }
 
 
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    //String s = search.getText().toString();
-    //                setTheTextView();
-                }
-            });
+            @Override
+            public void afterTextChanged(Editable editable) {
+                //String s = search.getText().toString();
+                //                setTheTextView();
+            }
+        });
 
 
         // Init API
         retrofit = RetrofitClient.getInstance();
         myAPI = retrofit.create(INodeJS.class);
 
+        publish_btn = findViewById(R.id.publish_btn);
+        publish_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(chapter_title_edit.getText().length()<1){
+                    chapter_title_edit.setError("Title must not be empty!");
+                }
+                if(mEditText.getText().toString().length() < 200) {
+                    mEditText.setError("Story must be at least 200 characters long");
+                }
+                else{
+                    chapter_text = mEditText.getHtml();
+                    chapter_title = chapter_title_edit.getText().toString();
 
-        File coverImage = persistImage(bmp, "cover");
-        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), coverImage);
-        fileBody = MultipartBody.Part.createFormData("cover", coverImage.getName(), requestFile);
-
-         publish_btn = findViewById(R.id.publish_btn);
-         publish_btn.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                 if(mEditText.getText().toString().length() < 200) {
-                     mEditText.setError("Story must be at least 200 characters long");
-                 }
-                 else{
-                     story = mEditText.getHtml();
-                     submitShortStory(userID, title, story, genre, description, fileBody);
-                     finish();
-                 }
-             }
-         });
+                    submitChapter(story_id, chapter_title, chapter_text);
+                    finish();
+                }
+            }
+        });
 
     }
 
-    private void submitShortStory(int userID, String title, String shortStory, String shortGenre, String shortDescription, MultipartBody.Part fileBody) {
-        compositeDisposable.add(myAPI.submitShortStories(userID, title, shortStory, shortGenre, shortDescription, fileBody)
+
+    private void submitChapter(int story_id, String chapter_title, String chapter_text) {
+        compositeDisposable.add(myAPI.submitChapters(story_id, chapter_title, chapter_text)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<ResponseBody>() {
-                    @Override
-                    public void accept(ResponseBody responseBody) throws Exception {
-                        if(responseBody.toString().contains("successfully")){
-                            Toast.makeText(getApplicationContext(), "Short Story has been uploaded successfully", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            Toast.makeText(getApplicationContext(), "Short Story has been uploaded successfully", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-//                    @Override
-//                    public void accept(String s) throws Exception {
-//
-//                    }
-                }));
+                .subscribe(new Consumer<String>() {
+                               @Override
+                               public void accept(String s) throws Exception {
+                                   if (s.contains("successfully")) {
+                                       Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+                                   } else {
+                                       Toast.makeText(getApplicationContext(), "Story has been uploaded! - " + s, Toast.LENGTH_SHORT).show();
+                                   }
+                               }
+                           }
+                ));
     }
 
-    private File persistImage(Bitmap bitmap, String name) {
-        File filesDir = getFilesDir();
-        File imageFile = new File(filesDir, name + ".jpg");
 
-        OutputStream os;
-        try {
-            os = new FileOutputStream(imageFile);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
-            os.flush();
-            os.close();
-            return imageFile;
-        } catch (Exception e) {
-            Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
-        }
-        return imageFile;
-    }
 
     private void initToolbar() {
         mToolbar = this.findViewById(R.id.areToolbar);
@@ -337,12 +307,4 @@ public class WritingShortActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 //        mToolbar.onActivityResult(requestCode, resultCode, data);
     }
-
-
-
-
-
 }
-
-
-

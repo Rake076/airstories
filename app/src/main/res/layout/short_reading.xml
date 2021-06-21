@@ -31,9 +31,18 @@
             android:text="This is a description This is a description This is a description This is a description This is a description This is a description This is a description This is a description This is a description This is a description "
             android:textSize="16sp"/>
 
-        <LinearLayout
-            android:layout_alignParentBottom="true"
+        <View
+            android:id="@+id/separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#363636"
             android:layout_below="@id/short_story_textview"
+            android:layout_marginTop="16dp"/>
+
+        <LinearLayout
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="32dp"
+            android:layout_below="@id/separator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -41,25 +50,25 @@
 
 
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_weight="1"
-                android:src="@drawable/clown"
+                android:src="@drawable/ic_outline_thumb_up_24"
                 android:id="@+id/like_btn"/>
 
             <ImageView
-                android:layout_width="60dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_weight="1"
-                android:layout_height="60dp"
-                android:layout_toRightOf="@id/like_btn"
-                android:src="@drawable/clown"/>
+                android:id="@+id/comment_btn"
+                android:src="@drawable/ic_baseline_mode_comment_24"/>
 
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_weight="1"
-                android:layout_height="60dp"
-                android:layout_toRightOf="@id/like_btn"
-                android:src="@drawable/clown"/>
+<!--            <ImageView-->
+<!--                android:layout_width="60dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:layout_height="60dp"-->
+<!--                android:layout_toRightOf="@id/like_btn"-->
+<!--                android:src="@drawable/clown"/>-->
 
 
         </LinearLayout>

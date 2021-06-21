@@ -58,8 +58,8 @@ public class AdapterChapter extends ArrayAdapter<Chapters>{
             titleTextView = convertView.findViewById(R.id.chapter_title_textview);
             titleTextView.setText(chapters.getChapter_name());
 
-            descriptionTextView = convertView.findViewById(R.id.chapter_description_textview);
-            descriptionTextView.setText(chapters.getChapter_text());
+//            descriptionTextView = convertView.findViewById(R.id.chapter_description_textview);
+//            descriptionTextView.setText(chapters.getChapter_text());
 
             return convertView;
         }

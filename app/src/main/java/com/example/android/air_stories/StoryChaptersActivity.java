@@ -1,5 +1,6 @@
 package com.example.android.air_stories;
 
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,7 +8,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,21 +45,19 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class DescriptionStoryActivity extends AppCompatActivity implements Serializable  {
-
-    ImageView imageView;
-    TextView title, username, appCount, description;
+public class StoryChaptersActivity extends AppCompatActivity {
 
     ListView listView;
     AdapterChapter adapter;
 
-    int userID, story_id;
+    MaterialButton addChapter_btn;
+
+    int story_id;
     Intent intent;
-    TextView username_textview;
+
     Call<List<Chapters>> listCall;
     Retrofit Bretrofit = RetrofitClient.getClient();
     INodeJS jsonPlaceHolderApi = Bretrofit.create(INodeJS.class);
-
 
     final ArrayList<Chapters> chaptersObject = new ArrayList<>();
 
@@ -67,54 +65,34 @@ public class DescriptionStoryActivity extends AppCompatActivity implements Seria
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.airstories_story_intro);
+        setContentView(R.layout.chapter_edit_list_activity);
 
+        addChapter_btn = findViewById(R.id.write_chapter_btn);
         Intent intent = getIntent();
-        Stories story = (Stories) intent.getSerializableExtra("Story");
-        User user = (User) intent.getSerializableExtra("user");
-
-        RelativeLayout chapters_layout = findViewById(R.id.chapter_view);
+        Stories story = (Stories) intent.getSerializableExtra("story");
         story_id = story.getStory_id();
+        listView = findViewById(R.id.chapter_listview);
+        networkCall();
 
-        title = findViewById(R.id.short_title_textview);
-        title.setText("" + story.getStory_title());
-//        listView = findViewById(R.id.chapter_listview);
-
-        appCount = findViewById(R.id.app_count_textview);
-        appCount.setText("" + story.getLikes());
-
-        description = findViewById(R.id.short_description_textview);
-        description.setText("" + story.getStory_description());
-
-        username = findViewById(R.id.username_textview);
-        username.setText("" + story.getUsername());
-
-        imageView = findViewById(R.id.short_image);
-        Picasso.with(getApplicationContext()).load(story.getCoverImage()).into(imageView);
-
-        chapters_layout.setOnClickListener(new View.OnClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ChaptersActivity.class);
-                intent.putExtra("story", story);
-                intent.putExtra("user", user);
-                startActivity(intent);
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                Intent intent = new Intent(getApplicationContext(), ChapterEditActivity.class);
+//                intent.putExtra("story", story);
+////                intent.putExtra("chapter", chaptersObject.get(position));
+//                startActivity(intent);
             }
         });
 
-//        networkCall();
+        addChapter_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ChapterWritingActivity.class);
+                intent.putExtra("story", story);
+                startActivity(intent);
 
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                Intent intent = new Intent(getApplicationContext(), StoryReadingActivity.class);
-//                intent.putExtra("story", story);
-//                intent.putExtra("chapter", chaptersObject.get(position));
-//                intent.putExtra("user", user);
-//                startActivity(intent);
-//            }
-//        });
-
+            }
+        });
 
     }
 
@@ -139,21 +117,21 @@ public class DescriptionStoryActivity extends AppCompatActivity implements Seria
                 }
 //                Toast.makeText(getApplicationContext(), chaptersObject.get(1).getChapter_name(), Toast.LENGTH_SHORT).show();
 
-
-//                adapter = new AdapterChapter(getApplicationContext(), chaptersObject);
-//                listView.setAdapter(adapter);
+                adapter = new AdapterChapter(getApplicationContext(), chaptersObject);
+                listView.setAdapter(adapter);
             }
 
             @Override
             public void onFailure(Call<List<Chapters>> call, Throwable t) {
 //                Toast.makeText(getApplicationContext(), "Unable to get Chapters at this moment", Toast.LENGTH_SHORT).show();
             }
-
-
-
         });
-
     }
+
+
+
+
+
 
 
 

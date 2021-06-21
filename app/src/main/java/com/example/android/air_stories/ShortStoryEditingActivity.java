@@ -1,8 +1,10 @@
 package com.example.android.air_stories;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,15 +36,21 @@ import com.example.android.air_stories.Retrofit.INodeJS;
 import com.example.android.air_stories.Retrofit.RetrofitClient;
 import com.google.android.material.button.MaterialButton;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 
-public class StoryEditingActivity extends AppCompatActivity{
+public class ShortStoryEditingActivity extends AppCompatActivity{
 
         private IARE_Toolbar mToolbar;
         private AREditText mEditText;
@@ -54,8 +62,13 @@ public class StoryEditingActivity extends AppCompatActivity{
         int userID = 0;
 
         ImageView imageView;
+        Bitmap shortImage;
 
         Uri imageUri;
+
+        MultipartBody.Part fileBody;
+
+        Bitmap bmp;
 
         Retrofit retrofit;
         INodeJS myAPI;
@@ -72,23 +85,24 @@ public class StoryEditingActivity extends AppCompatActivity{
             Intent intent = getIntent();
             initToolbar();
 
-            publish_btn = findViewById(R.id.publish_btn);
             title_textview = findViewById(R.id.title_textview);
             mEditText = findViewById(R.id.arEditText);
 
 
 
-//         type = intent.getStringExtra("type");
-//         genre = intent.getStringExtra("genre");
-         title = intent.getStringExtra("title");
-         description = intent.getStringExtra("description");
+//            type = intent.getStringExtra("type");
+//            genre = intent.getStringExtra("genre");
+            title = intent.getStringExtra("title");
+            description = intent.getStringExtra("description");
+            shortImage = intent.getParcelableExtra("shortImage");
+            bmp = intent.getParcelableExtra("shortImage");
+//            username = intent.getStringExtra("username");
+//            userID = intent.getIntExtra("userID", 0);
+            story = intent.getStringExtra("story");
+            int shortID = intent.getIntExtra("shortID", 0);
 
-         username = intent.getStringExtra("username");
-         userID = intent.getIntExtra("userID", 0);
-         story = intent.getStringExtra("story");
 
-
-            mEditText.setText(story);
+            mEditText.fromHtml(story);
             title_textview.setText(title);
 
 
@@ -96,34 +110,64 @@ public class StoryEditingActivity extends AppCompatActivity{
             retrofit = RetrofitClient.getInstance();
             myAPI = retrofit.create(INodeJS.class);
 
+            File coverImage = persistImage(bmp, "cover");
+            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), coverImage);
+            fileBody = MultipartBody.Part.createFormData("cover", coverImage.getName(), requestFile);
+
+            publish_btn = findViewById(R.id.publish_btn);
             publish_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    story = mEditText.getHtml();
+
+                    if(mEditText.getText().toString().length() < 200) {
+                        mEditText.setError("Story must be at least 200 characters long");
+                    }
+                    else {
+                        story = mEditText.getHtml();
+                        editShortStory(shortID, title, story, genre, description, fileBody);
+                        finish();
+                    }
+
                 }
             });
 
         }
 
-        private void submitShortStory(int userID, String title, String shortStory, String shortGenre, String shortDescription, MultipartBody.Part file) {
-            compositeDisposable.add(myAPI.submitShortStories(userID, title, shortStory, shortGenre, shortDescription, this.file)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<ResponseBody>() {
-                        @Override
-                        public void accept(ResponseBody responseBody) throws Exception {
-                            if(responseBody.toString().contains("successfully")){
-                                Toast.makeText(getApplicationContext(), responseBody.toString(), Toast.LENGTH_SHORT).show();
 
-                            }
-                            else{
-                                Toast.makeText(getApplicationContext(), "Error: "+ responseBody.toString(), Toast.LENGTH_SHORT).show();
-                            }
+    private void editShortStory(int shortID, String title, String shortStory, String shortGenre, String shortDescription, MultipartBody.Part fileBody) {
+        compositeDisposable.add(myAPI.editShortStory(shortID, title, shortStory, shortGenre, shortDescription, fileBody)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<ResponseBody>() {
+                    @Override
+                    public void accept(ResponseBody responseBody) throws Exception {
+                        if(responseBody.toString().contains("successfully")){
+                            Toast.makeText(getApplicationContext(), "Success: " + responseBody.toString(), Toast.LENGTH_SHORT).show();
                         }
-                    }));
+                        else{
+                            Toast.makeText(getApplicationContext(), "Short Story has been edited successfully!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }));
+    }
+
+
+    private File persistImage(Bitmap bitmap, String name) {
+        File filesDir = getFilesDir();
+        File imageFile = new File(filesDir, name + ".jpg");
+
+        OutputStream os;
+        try {
+            os = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            os.flush();
+            os.close();
+            return imageFile;
+        } catch (Exception e) {
+            Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
         }
-
-
+        return imageFile;
+    }
 
 
 

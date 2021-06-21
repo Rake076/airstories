@@ -1,6 +1,8 @@
 package com.example.android.air_stories.Model;
 
-public class Chapters {
+import java.io.Serializable;
+
+public class Chapters implements Serializable {
 
     int chapter_id;
 

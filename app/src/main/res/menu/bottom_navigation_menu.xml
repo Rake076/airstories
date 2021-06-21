@@ -25,6 +25,6 @@
         android:id="@+id/user_btn"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_person_24"
-        android:title="Notifications"/>
+        android:title="Profile"/>
 
 </menu>

@@ -51,7 +51,6 @@
         </activity>
 
 
-
         <activity
             android:name=".ShortReadingActivity"
             android:theme="@style/Theme.Airstories.NoActionBar">
@@ -72,13 +71,56 @@
         </activity>
 
         <activity
-            android:name=".StoryInfoEditingActivity"
+            android:name=".StoryReadingActivity"
             android:windowSoftInputMode="stateVisible|adjustResize"
             android:theme="@style/Theme.Airstories.NoActionBar">
         </activity>
 
         <activity
-            android:name=".StoryEditingActivity"
+            android:name=".ShortStoryInfoEditingActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:theme="@style/Theme.Airstories.NoActionBar">
+        </activity>
+
+        <activity
+            android:name=".ShortStoryEditingActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:theme="@style/Theme.Airstories.NoActionBar">
+        </activity>
+
+        <activity
+            android:name=".StoryInfoEditingActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:theme="@style/Theme.Airstories.NoActionBar">
+        </activity>
+
+
+        <activity
+            android:name=".StoryChaptersActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:theme="@style/Theme.Airstories.NoActionBar">
+        </activity>
+
+        <activity
+            android:name=".ChapterEditActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:theme="@style/Theme.Airstories.NoActionBar">
+        </activity>
+
+        <activity
+            android:name=".ChapterWritingActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:theme="@style/Theme.Airstories.NoActionBar">
+        </activity>
+
+        <activity
+            android:name=".WritingStoryActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:theme="@style/Theme.Airstories.NoActionBar">
+        </activity>
+
+        <activity
+            android:name=".ChaptersActivity"
             android:windowSoftInputMode="stateVisible|adjustResize"
             android:theme="@style/Theme.Airstories.NoActionBar">
         </activity>
@@ -94,6 +136,11 @@
         <activity
             android:name=".JournalWritingActivity"
             android:windowSoftInputMode="stateVisible|adjustResize"
+            android:theme="@style/Theme.Airstories.NoActionBar">
+        </activity>
+
+        <activity
+            android:name=".JournalReadingActivity"
             android:theme="@style/Theme.Airstories.NoActionBar">
         </activity>
 

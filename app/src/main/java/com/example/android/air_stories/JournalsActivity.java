@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.android.air_stories.Model.Journals;
 import com.example.android.air_stories.Model.ShortStories;
+import com.example.android.air_stories.Model.Stories;
+import com.example.android.air_stories.Model.User;
 import com.example.android.air_stories.Retrofit.INodeJS;
 import com.example.android.air_stories.Retrofit.RetrofitClient;
 import com.google.android.material.button.MaterialButton;
@@ -49,8 +52,10 @@ public class JournalsActivity extends AppCompatActivity {
         write_journal_btn = findViewById(R.id.write_journal_btn);
         username_textview = findViewById(R.id.journals_username_textview);
         Intent intent = getIntent();
-        userID = intent.getIntExtra("userID", 0);
-        username_textview.setText(userID+"");
+        User user = (User) intent.getSerializableExtra("user");
+        username_textview.setText(user.getUsername());
+
+        userID = user.getUserID();
 
         listView = findViewById(R.id.journal_listview);
 
@@ -67,6 +72,17 @@ public class JournalsActivity extends AppCompatActivity {
         AdapterJournal adapter = new AdapterJournal(getApplicationContext(), journalsObject);
         listView.setAdapter(adapter);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                    Journals journal = journalsObject.get(position);
+                    Intent intent = new Intent(getApplicationContext(), JournalReadingActivity.class);
+                    intent.putExtra("journal", journal);
+                    startActivity(intent);
+
+            }
+        });
     }
 
 

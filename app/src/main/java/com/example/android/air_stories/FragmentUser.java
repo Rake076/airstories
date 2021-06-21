@@ -105,7 +105,7 @@ public class FragmentUser extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), JournalsActivity.class);
-                intent.putExtra("userID", userID);
+                intent.putExtra("user", user);
                 startActivity(intent);
             }
         });

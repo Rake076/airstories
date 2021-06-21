@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Journals {
+public class Journals implements Serializable{
 
     int journal_id;
 

@@ -119,6 +119,7 @@ public class JournalWritingActivity extends AppCompatActivity {
                     String title = title_editText.getText().toString();
                     String journal = mEditText.getHtml();
                     submitJournal(userID, journal, title);
+                    finish();
                 }
             }
         });

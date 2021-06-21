@@ -194,6 +194,8 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override public boolean onNavigationItemSelected(@Nullable MenuItem item) {
                     switch (item.getItemId()) {
+                        case R.id.home_btn:
+                            return true;
                         case R.id.search_btn:
                             shortNetworkCall();
                             storyNetworkCall();
@@ -204,7 +206,8 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
                                 globalTag = "StoryFrag";
                             }
                             return true;
-
+                        case R.id.list_btn:
+                            return true;
                         case R.id.write_btn:
                             fragment = getSupportFragmentManager().findFragmentByTag("writeFrag");
                             if (fragment == null || !fragment.isVisible()) {
@@ -219,6 +222,7 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
                                 openFragment(R.id.fragment_layout, FragmentUser.newInstance("", ""), "UserFrag");
                                 globalTag = "UserFrag";
                             }
+                            return true;
                     }
                     return false;
                 }
