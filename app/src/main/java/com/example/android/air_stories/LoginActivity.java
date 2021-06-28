@@ -121,8 +121,9 @@ public class LoginActivity extends AppCompatActivity {
 
                                 JSONObject jsonObject = new JSONObject(s);
                                 SaveSharedPreference.setUserName(getApplicationContext(), jsonObject.getString("username"));
+                                SaveSharedPreference.setUserID(getApplicationContext(), jsonObject.getInt("user_id"));
                                 SaveSharedPreference.setJSONString(getApplicationContext(), s);
-//                                Toast.makeText(LoginActivity.this, "Login Successful " + jsonObject.getString("username"), Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(LoginActivity.this, "Login Successful " + jsonObject.getInt("user_id"), Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
 //                                intent.putExtra("stringuserdata", s);
                                 startActivity(intent);

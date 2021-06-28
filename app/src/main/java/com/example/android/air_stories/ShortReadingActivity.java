@@ -95,6 +95,19 @@ public class ShortReadingActivity extends AppCompatActivity {
             }
         });
 
+        comment_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ShortCommentsActivity.class);
+
+                intent.putExtra("ShortStory", shortStory);
+                intent.putExtra("user", user);
+
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     public void isLiked(int userID, int shortID){
@@ -117,6 +130,8 @@ public class ShortReadingActivity extends AppCompatActivity {
                            }
                 ));
     }
+
+
 
     public void like(int userID, int shortID){
         compositeDisposable.add(myAPI.likeShortStory(userID, shortID)

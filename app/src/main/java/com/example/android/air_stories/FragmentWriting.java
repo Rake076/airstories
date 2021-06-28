@@ -194,12 +194,11 @@ public class FragmentWriting extends Fragment implements Serializable, AdapterVi
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         type = type_dropdown.getSelectedItem().toString();
-                        Log.v("Dropdown", type + "222");
                     }
 
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
-
+                        type = type_dropdown.getSelectedItem().toString();
                     }
                 });
 
@@ -207,7 +206,7 @@ public class FragmentWriting extends Fragment implements Serializable, AdapterVi
                 if (type == "Short"){
                     intent = new Intent(getContext(), WritingShortActivity.class);
                 }
-                else{
+                else if (type == "Complete"){
                     intent = new Intent(getContext(), WritingStoryActivity.class);
                 }
 

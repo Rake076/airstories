@@ -91,7 +91,7 @@ public class ShortStoryEditingActivity extends AppCompatActivity{
 
 
 //            type = intent.getStringExtra("type");
-//            genre = intent.getStringExtra("genre");
+            genre = intent.getStringExtra("genre");
             title = intent.getStringExtra("title");
             description = intent.getStringExtra("description");
             shortImage = intent.getParcelableExtra("shortImage");

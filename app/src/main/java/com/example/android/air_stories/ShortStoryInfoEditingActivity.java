@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,7 +23,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-public class ShortStoryInfoEditingActivity extends AppCompatActivity {
+public class ShortStoryInfoEditingActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     String title, genre, type, description, username;
     int userID;
     MaterialButton next_btn, edit_btn, addCover_btn;
@@ -44,6 +46,13 @@ public class ShortStoryInfoEditingActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         shortStory = (ShortStories) intent.getSerializableExtra("Story");
+
+        genre_dropdown = findViewById(R.id.genre_spinner);
+        genre_dropdown.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+
+
+        ArrayAdapter<String> genre_adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, genres);
+        genre_dropdown.setAdapter(genre_adapter);
 
         username = intent.getStringExtra("username");
         userID = intent.getIntExtra("userID", 0);
@@ -106,13 +115,10 @@ public class ShortStoryInfoEditingActivity extends AppCompatActivity {
                 description = description_edit_text.getText().toString();
 
 
-//                intent.putExtra("genre", genre);
-//                intent.putExtra("type", type);
-
+                intent.putExtra("genre", genre);
                 intent.putExtra("title", title);
                 intent.putExtra("description", description);
                 intent.putExtra("story", shortStory.getShortStory());
-//                intent.putExtra("username", username);
                 intent.putExtra("userID", userID);
                 intent.putExtra("shortImage", bitmap);
                 intent.putExtra("shortID", shortStory.getshortID());
@@ -144,6 +150,9 @@ public class ShortStoryInfoEditingActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
+
     }
 
     // Getting image from gallery try 2.0
@@ -180,5 +189,16 @@ public class ShortStoryInfoEditingActivity extends AppCompatActivity {
 
 
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//            genre = genres[genre_dropdown.getSelectedItemPosition()];
+        genre = (String) genre_dropdown.getSelectedItem();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        genre = (String) genre_dropdown.getSelectedItem();
     }
 }

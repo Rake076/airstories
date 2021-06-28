@@ -68,6 +68,8 @@ public class StoryReadingActivity extends AppCompatActivity {
         Chapters chapter = (Chapters) intent.getSerializableExtra("chapter");
         User user = (User) intent.getSerializableExtra("user");
         Stories story = (Stories) intent.getSerializableExtra("story");
+        isLiked(user.getUserID(), story.getStory_id());
+
 
 //        isLiked(user.getUserID(), story.getStory_id());
 
@@ -86,13 +88,35 @@ public class StoryReadingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                Drawable drawable = like_btn.getDrawable();
+                if(!isFilled){
+                    like(user.getUserID(), story.getStory_id());
+                    like_btn.setImageResource(R.drawable.ic_baseline_thumb_up_24);
+                    isFilled = true;
+                } else {
+                    unlike(user.getUserID(), story.getStory_id());
+                    like_btn.setImageResource(R.drawable.ic_outline_thumb_up_24);
+                    isFilled = false;
+                }
+            }
+        });
+
+        comment_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), StoryCommentsActivity.class);
+
+                intent.putExtra("Story", story);
+                intent.putExtra("user", user);
+
+                startActivity(intent);
             }
         });
 
     }
 
-    public void isLiked(int userID, int shortID){
-        compositeDisposable.add(myAPI.isShortLiked(userID, shortID)
+    public void isLiked(int userID, int storyID){
+        compositeDisposable.add(myAPI.isStoryLiked(userID, storyID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<String>() {
@@ -112,8 +136,8 @@ public class StoryReadingActivity extends AppCompatActivity {
                 ));
     }
 
-    public void like(int userID, int shortID){
-        compositeDisposable.add(myAPI.likeShortStory(userID, shortID)
+    public void like(int userID, int storyID){
+        compositeDisposable.add(myAPI.likeStory(userID, storyID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<String>() {
@@ -129,8 +153,8 @@ public class StoryReadingActivity extends AppCompatActivity {
                 ));
     }
 
-    public void unlike(int userID, int shortID){
-        compositeDisposable.add(myAPI.unlikeShortStory(userID, shortID)
+    public void unlike(int userID, int storyID){
+        compositeDisposable.add(myAPI.unlikeStory(userID, storyID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<String>() {

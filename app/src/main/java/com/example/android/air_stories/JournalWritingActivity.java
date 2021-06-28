@@ -112,12 +112,17 @@ public class JournalWritingActivity extends AppCompatActivity {
         publish_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mEditText.getText().toString().length() < 50) {
+                String title = title_editText.getText().toString();
+                String journal = mEditText.getText().toString();
+
+                if(journal.length() < 50) {
                     mEditText.setError("Journal must be at least 50 characters long");
                 }
+                else if(title.length() < 1 || title.length() > 25){
+                    title_editText.setError("Title must be between 1 to 25 characters");
+                }
                 else{
-                    String title = title_editText.getText().toString();
-                    String journal = mEditText.getHtml();
+                    journal = mEditText.getHtml();
                     submitJournal(userID, journal, title);
                     finish();
                 }

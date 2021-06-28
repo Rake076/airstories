@@ -1,6 +1,8 @@
 package com.example.android.air_stories;
 
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +26,7 @@ import androidx.fragment.app.Fragment;
 import com.example.android.air_stories.Model.User;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.squareup.picasso.Picasso;
 
 public class FragmentUser extends Fragment {
 
@@ -49,9 +53,13 @@ public class FragmentUser extends Fragment {
     User user;
     HomeActivity homeActivity;
 
+    RelativeLayout journal_layout, editProfile_layout, logout_layout;
+
     int userID;
     TextView username;
     MaterialButton journal_btn, editProfile_btn;
+    ImageView userImage;
+
     //    Intent intent = new Intent(getActivity(), StoryWritingActivity.class);
     public FragmentUser(){
 
@@ -90,9 +98,10 @@ public class FragmentUser extends Fragment {
         username = rootView.findViewById(R.id.username_textview);
         username.setText(user.getUsername());
         userID = user.getUserID();
+        userImage = rootView.findViewById(R.id.user_image);
 
-        MaterialButton logout_btn = rootView.findViewById(R.id.logout_btn);
-        logout_btn.setOnClickListener(new View.OnClickListener() {
+        logout_layout = rootView.findViewById(R.id.logout_layout);
+        logout_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SaveSharedPreference.clear(getActivity());
@@ -100,8 +109,9 @@ public class FragmentUser extends Fragment {
                 startActivity(intent);
             }
         });
-        journal_btn = rootView.findViewById(R.id.journal_btn);
-        journal_btn.setOnClickListener(new View.OnClickListener(){
+
+        journal_layout = rootView.findViewById(R.id.write_journal_layout);
+        journal_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), JournalsActivity.class);
@@ -109,6 +119,21 @@ public class FragmentUser extends Fragment {
                 startActivity(intent);
             }
         });
+
+        editProfile_layout = rootView.findViewById(R.id.edit_profile_layout);
+        editProfile_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), EditProfileActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        homeActivity.getUser(SaveSharedPreference.getUserID(getContext()));
+        Picasso.with(getContext())
+                .load(user.getProfile_image())
+                .into(userImage);
 
 
 

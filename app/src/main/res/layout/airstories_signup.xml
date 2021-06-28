@@ -18,29 +18,29 @@
 
 
         <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="192dp"
+            android:layout_height="192dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="48dp"
             android:layout_marginBottom="0dp"
             app:srcCompat="@drawable/clown" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="60dp"
-            android:text="Air Stories"
-            android:textAllCaps="true"
-            android:textSize="16sp" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:layout_marginBottom="60dp"-->
+<!--            android:text="Air Stories"-->
+<!--            android:textAllCaps="true"-->
+<!--            android:textSize="16sp" />-->
 
-        <com.google.android.material.button.MaterialButton
-            android:layout_margin="4dp"
-            android:id="@+id/facebook_signup"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="Register With Facebook"
-            android:backgroundTint="#3b5998" />
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:layout_margin="4dp"-->
+<!--            android:id="@+id/facebook_signup"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="60dp"-->
+<!--            android:text="Register With Facebook"-->
+<!--            android:backgroundTint="#3b5998" />-->
 
         <View
             android:layout_width="match_parent"
@@ -51,6 +51,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_margin="4dp"
             app:startIconDrawable="@drawable/ic_baseline_email_18"
             android:hint="Email">
@@ -67,6 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:startIconDrawable="@drawable/ic_baseline_person_24"
             android:hint="Username">
 
@@ -84,6 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:hint="Password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:startIconDrawable="@drawable/ic_baseline_vpn_key_18">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -95,8 +98,6 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-
-        <!-- Snippet from "Add buttons" section goes here. -->
 
         <com.google.android.material.button.MaterialButton
             android:layout_marginTop="16dp"

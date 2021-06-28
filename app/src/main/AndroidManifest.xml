@@ -19,10 +19,6 @@
         <activity
             android:name=".LoginActivity"
             android:theme="@style/Theme.Airstories.NoActionBar">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
         </activity>
 
         <activity
@@ -107,6 +103,19 @@
             android:theme="@style/Theme.Airstories.NoActionBar">
         </activity>
 
+
+        <activity
+            android:name=".ShortCommentsActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:theme="@style/Theme.Airstories.NoActionBar">
+        </activity>
+
+            <activity
+                android:name=".StoryCommentsActivity"
+                android:windowSoftInputMode="stateVisible|adjustResize"
+                android:theme="@style/Theme.Airstories.NoActionBar">
+            </activity>
+
         <activity
             android:name=".ChapterWritingActivity"
             android:windowSoftInputMode="stateVisible|adjustResize"
@@ -135,6 +144,12 @@
 
         <activity
             android:name=".JournalWritingActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:theme="@style/Theme.Airstories.NoActionBar">
+        </activity>
+
+        <activity
+            android:name=".EditProfileActivity"
             android:windowSoftInputMode="stateVisible|adjustResize"
             android:theme="@style/Theme.Airstories.NoActionBar">
         </activity>

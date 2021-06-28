@@ -1,6 +1,7 @@
 package com.example.android.air_stories.Retrofit;
 
 import com.example.android.air_stories.Model.Chapters;
+import com.example.android.air_stories.Model.Comments;
 import com.example.android.air_stories.Model.Journals;
 import com.example.android.air_stories.Model.ShortStories;
 import com.example.android.air_stories.Model.Stories;
@@ -33,6 +34,17 @@ public interface INodeJS {
     Observable<String> loginUser(@Field("email") String email,
                                     @Field("password")String password);
 
+    @GET("user")
+    Observable<String> getUserData(@Query("user_id") int user_id);
+
+
+    @Multipart
+    @POST("user")
+    Observable<ResponseBody> updateUserData(@Part("user_id") int user_id,
+                                                @Part("username")String username,
+                                                @Part("about") String about,
+                                                @Part MultipartBody.Part image);
+
 
     @GET("shortStories")
         Call<List<ShortStories>> getShortStories();
@@ -44,8 +56,35 @@ public interface INodeJS {
     @GET("shortStories/userStories")
     Call<List<ShortStories>> getUserShortStories(@Query("userID")int userID);
 
+    @GET("shortStories/search")
+    Call<List<ShortStories>> getShortStoriesTitle(@Query("shortTitle")String shortTitle);
+
+
+
+    @GET("shortStories/readingList")
+    Call<List<ShortStories>> getShortStoriesReadingList(@Query("userID")int userID);
+
+
     @GET("stories/userStories")
     Call<List<Stories>> getUserStories(@Query("userID")int userID);
+
+    @GET("stories/search")
+    Call<List<Stories>> getStoriesTitle(@Query("storyTitle")String storyTitle);
+
+    @GET("stories/readingList")
+    Call<List<Stories>> getStoriesReadingList(@Query("userID")int userID);
+
+
+    @POST("shortStories/readingList")
+    @FormUrlEncoded
+    Observable<String> addShortReadingList(@Field("user_id") int userID,
+                                      @Field("story_id") int story_id);
+
+    @POST("stories/readingList")
+    @FormUrlEncoded
+    Observable<String> addStoryReadingList(@Field("user_id") int userID,
+                                           @Field("story_id") int story_id);
+
 
     @POST("shortStories/like")
     @FormUrlEncoded
@@ -60,6 +99,39 @@ public interface INodeJS {
     @GET("shortStories/like")
     Observable<String> isShortLiked(@Query("userID") int userID,
                                     @Query("shortID")int shortID);
+
+    @POST("stories/like")
+    @FormUrlEncoded
+    Observable<String> likeStory(@Field("user_id") int userID,
+                                      @Field("story_id") int storyID);
+
+    @POST("stories/unlike")
+    @FormUrlEncoded
+    Observable<String> unlikeStory(@Field("user_id") int userID,
+                                        @Field("story_id") int storyID);
+
+    @GET("stories/like")
+    Observable<String> isStoryLiked(@Query("user_id") int userID,
+                                    @Query("story_id")int storyID);
+
+    @GET("shortStories/comments")
+    Call<List<Comments>> getShortComments(@Query("story_id")int story_id);
+
+    @POST("shortStories/comments")
+    @FormUrlEncoded
+    Observable<String> submitShortComment(@Field("story_id") int story_id,
+                                        @Field("user_id") int user_id,
+                                          @Field("comment") String comment);
+
+    @GET("stories/comments")
+    Call<List<Comments>> getStoryComments(@Query("story_id")int story_id);
+
+    @POST("stories/comments")
+    @FormUrlEncoded
+    Observable<String> submitStoryComment(@Field("story_id") int story_id,
+                                          @Field("user_id") int user_id,
+                                          @Field("comment") String comment);
+
 
     @GET("stories/chapters")
     Call<List<Chapters>> getStoryChapters(@Query("story_id")int story_id);
@@ -82,7 +154,6 @@ public interface INodeJS {
 
     @Multipart
     @POST("shortStories")
-//    @FormUrlEncoded
     Observable<ResponseBody> submitShortStories(@Part("userID") int userID,
                                           @Part("shortTitle")String title,
                                           @Part("shortStory") String shortStory,

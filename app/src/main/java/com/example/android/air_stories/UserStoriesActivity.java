@@ -2,8 +2,10 @@ package com.example.android.air_stories;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ListView;
@@ -13,6 +15,7 @@ import android.widget.Toolbar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.android.air_stories.Model.ShortStories;
@@ -39,6 +42,8 @@ public class UserStoriesActivity extends AppCompatActivity {
 
     SwitchMaterial switchMaterial;
 
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
     TextInputEditText search_edit_text;
     String username;
     int userID;
@@ -62,8 +67,10 @@ public class UserStoriesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_stories_activity);
 
-        SwitchMaterial switchMaterial = findViewById(R.id.switch1);
+        switchMaterial = findViewById(R.id.switch1);
         switchMaterial.setText("Short Stories");
+
+        mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_stories);
 
 //        switchMaterial.findViewById(R.id.switch1);
         intent = getIntent();
@@ -71,17 +78,53 @@ public class UserStoriesActivity extends AppCompatActivity {
         userID = intent.getIntExtra("userID", 0);
         networkCall();
 
-//        search_edit_text = findViewById(R.id.search_edit_text);
-//        search_edit_text.setEnabled(false);
-//        search_edit_text.setVisibility(View.GONE);
 
         listView = (ListView)findViewById(R.id.short_story_list_view);
 
 
         AdapterShort adapter = new AdapterShort(getApplicationContext(), shortStoryObject);
-//
-        listView.setAdapter(adapter);
 
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+//                listView.setAdapter(adapter);
+                refreshListView();
+            }
+        }, 100);
+
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(mSwipeRefreshLayout.isRefreshing()) {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                            refreshListView();
+                        }
+                    }
+                }, 300);
+
+
+            }
+        });
+
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+                if (listView.getChildAt(0) != null) {
+                    mSwipeRefreshLayout.setEnabled(listView.getFirstVisiblePosition() == 0 && listView.getChildAt(0).getTop() == 0);
+                }
+            }
+        });
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -113,16 +156,28 @@ public class UserStoriesActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (switchMaterial.isChecked()){
-                    switchMaterial.setText("Short Stories");
-                    networkCall();
-                    AdapterShort adapter = new AdapterShort(getApplicationContext(), shortStoryObject);
-                    listView.setAdapter(adapter);
+
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            switchMaterial.setText("Short Stories");
+                            networkCall();
+                            AdapterShort adapter = new AdapterShort(getApplicationContext(), shortStoryObject);
+                            listView.setAdapter(adapter);
+                        }
+                    }, 100);
                 }
                 else{
-                    switchMaterial.setText("Stories");
-                    storyNetworkCall();
-                    AdapterStory storyAdapter = new AdapterStory(getApplicationContext(), StoryObject);
-                    listView.setAdapter(storyAdapter);
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            switchMaterial.setText("Stories");
+                            storyNetworkCall();
+                            AdapterStory storyAdapter = new AdapterStory(getApplicationContext(), StoryObject);
+                            listView.setAdapter(storyAdapter);                        }
+                    }, 100);
                 }
             }
         });
@@ -200,6 +255,21 @@ public class UserStoriesActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+
+    private void refreshListView(){
+
+        if(switchMaterial.isChecked()){
+            networkCall();
+            AdapterShort adapter = new AdapterShort(getApplicationContext(), shortStoryObject);
+            listView.setAdapter(adapter);
+        }
+        else{
+            storyNetworkCall();
+            AdapterStory adapter = new AdapterStory(getApplicationContext(), StoryObject);
+            listView.setAdapter(adapter);
+        }
     }
 
 }

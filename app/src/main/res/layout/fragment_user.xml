@@ -2,8 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#dedede">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/imagecover"
@@ -15,11 +14,10 @@
             android:background="#2b2b2b"/>
         <ImageView
             android:id="@+id/user_image"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="32dp"
             android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:layout_width="150dp"
-            android:layout_height="200dp"
+            android:layout_height="225dp"
             android:scaleType="fitXY"
             android:src="@drawable/clown"
             android:background="@color/black"/>
@@ -37,40 +35,139 @@
         android:text="Rake"
         android:textSize="18sp"/>
 
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/editProfile_btn"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16sp"
         android:layout_below="@id/username_textview"
-        android:text="Edit Profile"
-        android:textColor="@android:color/background_dark"
-        style="@style/Widget.MaterialComponents.Button.TextButton" />
+        android:id="@+id/edit_profile_layout">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/journal_btn"
-        android:layout_marginBottom="16dp"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lighterGrey"
+            android:layout_alignParentTop="true"/>
+
+        <TextView
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit Profile"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/roboto_light"
+            android:layout_alignParentLeft="true"/>
+
+        <TextView
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=">"
+            android:textSize="16sp"
+            android:fontFamily="@font/roboto_light"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:layout_below="@id/editProfile_btn"
-        android:text="Write Journal"
-        android:textColor="@android:color/background_dark"
-        style="@style/Widget.MaterialComponents.Button.TextButton"/>
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/edit_profile_layout"
+        android:id="@+id/write_journal_layout">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/logout_btn"
-        android:layout_marginBottom="16dp"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lighterGrey"
+            android:layout_alignParentTop="true"/>
+
+        <TextView
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Write Journal"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:fontFamily="@font/roboto_light"
+            android:layout_alignParentLeft="true"/>
+
+        <TextView
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=">"
+            android:textSize="16sp"
+            android:fontFamily="@font/roboto_light"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:layout_below="@id/journal_btn"
-        android:text="Logout"
-        android:textColor="@android:color/background_dark"
-        style="@style/Widget.MaterialComponents.Button.TextButton"/>
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/write_journal_layout"
+        android:id="@+id/logout_layout">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lighterGrey"
+            android:layout_alignParentTop="true"/>
+
+        <TextView
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:fontFamily="@font/roboto_light"
+            android:layout_alignParentLeft="true"/>
+    </RelativeLayout>
+
+    <!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:id="@+id/editProfile_btn"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:layout_marginBottom="16dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginHorizontal="16dp"-->
+<!--        android:layout_below="@id/username_textview"-->
+<!--        android:text="Edit Profile"-->
+<!--        android:textColor="@android:color/background_dark"-->
+<!--        style="@style/Widget.MaterialComponents.Button.TextButton" />-->
+
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:id="@+id/journal_btn"-->
+<!--        android:layout_marginBottom="16dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginHorizontal="16dp"-->
+<!--        android:layout_below="@id/editProfile_btn"-->
+<!--        android:text="Write Journal"-->
+<!--        android:textColor="@android:color/background_dark"-->
+<!--        style="@style/Widget.MaterialComponents.Button.TextButton"/>-->
+
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:id="@+id/logout_btn"-->
+<!--        android:layout_marginBottom="16dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginHorizontal="16dp"-->
+<!--        android:layout_below="@id/journal_btn"-->
+<!--        android:text="Logout"-->
+<!--        android:textColor="@android:color/background_dark"-->
+<!--        style="@style/Widget.MaterialComponents.Button.TextButton"/>-->
 
 
 </RelativeLayout>
