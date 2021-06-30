@@ -124,10 +124,20 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/read_btn"
             android:layout_width="150dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/short_description_textview"
             android:layout_centerHorizontal="true"
             android:text="Read"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_marginTop="8dp"
+            android:id="@+id/recommend_btn"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/read_btn"
+            android:layout_centerHorizontal="true"
+            android:text="Recommend"
+            android:backgroundTint="@color/black"/>
     </RelativeLayout>
 
 </ScrollView>

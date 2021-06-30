@@ -53,7 +53,7 @@ public class FragmentUser extends Fragment {
     User user;
     HomeActivity homeActivity;
 
-    RelativeLayout journal_layout, editProfile_layout, logout_layout;
+    RelativeLayout journal_layout, editProfile_layout, logout_layout, recommendations_layout;
 
     int userID;
     TextView username;
@@ -127,6 +127,15 @@ public class FragmentUser extends Fragment {
                 Intent intent = new Intent(getContext(), EditProfileActivity.class);
                 startActivity(intent);
 
+            }
+        });
+
+        recommendations_layout = rootView.findViewById(R.id.recommendation_layout);
+        recommendations_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), RecommendationsActivity.class);
+                startActivity(intent);
             }
         });
 

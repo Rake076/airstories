@@ -3,8 +3,10 @@ package com.example.android.air_stories.Retrofit;
 import com.example.android.air_stories.Model.Chapters;
 import com.example.android.air_stories.Model.Comments;
 import com.example.android.air_stories.Model.Journals;
+import com.example.android.air_stories.Model.Recommendation;
 import com.example.android.air_stories.Model.ShortStories;
 import com.example.android.air_stories.Model.Stories;
+import com.example.android.air_stories.Model.User;
 
 import java.util.List;
 
@@ -45,6 +47,26 @@ public interface INodeJS {
                                                 @Part("about") String about,
                                                 @Part MultipartBody.Part image);
 
+    @GET("users")
+    Observable<String> getUsers();
+
+    @GET("users")
+    Call<List<User>> getUsersData(@Query("user_id") int user_id);
+
+
+    @POST("users/recommend")
+    @FormUrlEncoded
+    Observable<String> recommendStories(@Field("recommender_id") int recommender_id,
+                                        @Field("recommendee_id") int recommendee_id,
+                                           @Field("story_id") int story_id,
+                                        @Field("story_type") String story_type);
+
+    @GET("users/removeRecommendation")
+    Observable<String> removeRecommendation(@Query("rec_id") int rec_id);
+
+
+    @GET("users/recommend")
+    Call<List<Recommendation>> getRecommendations(@Query("user_id") int user_id);
 
     @GET("shortStories")
         Call<List<ShortStories>> getShortStories();
@@ -59,10 +81,20 @@ public interface INodeJS {
     @GET("shortStories/search")
     Call<List<ShortStories>> getShortStoriesTitle(@Query("shortTitle")String shortTitle);
 
+    @GET("shortStories/search/genre")
+    Call<List<ShortStories>> getShortStoriesGenre(@Query("shortGenre")String shortGenre);
 
 
     @GET("shortStories/readingList")
     Call<List<ShortStories>> getShortStoriesReadingList(@Query("userID")int userID);
+
+    @GET("shortStories/readingList/remove")
+    Observable<String> removeShortStoryFromReadingList(@Query("user_id") int user_id,
+                                                       @Query("story_id") int story_id);
+
+    @GET("stories/readingList/remove")
+    Observable<String> removeStoryFromReadingList(@Query("user_id") int user_id,
+                                                       @Query("story_id") int story_id);
 
 
     @GET("stories/userStories")
@@ -70,6 +102,9 @@ public interface INodeJS {
 
     @GET("stories/search")
     Call<List<Stories>> getStoriesTitle(@Query("storyTitle")String storyTitle);
+
+    @GET("stories/search/genre")
+    Call<List<Stories>> getStoriesGenre(@Query("storyGenre")String storyGenre);
 
     @GET("stories/readingList")
     Call<List<Stories>> getStoriesReadingList(@Query("userID")int userID);

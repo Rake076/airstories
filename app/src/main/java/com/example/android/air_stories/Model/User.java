@@ -8,11 +8,11 @@ public class User implements Serializable {
 
     String username;
 
-    String email;
+    String u_email;
 
-    String password;
+    String u_password;
 
-    String profile_image;
+    String u_profile_image;
 
     String about;
 
@@ -22,9 +22,16 @@ public class User implements Serializable {
         this.user_id = userID;
         this.story_count = story_count;
         this.username = username;
-        this.email = email;
-        this.password = password;
-        this.profile_image = profile_image;
+        this.u_email = email;
+        this.u_password = password;
+        this.u_profile_image = profile_image;
+        this.about = about;
+    }
+
+    public User(int userID, String username, String profile_image, String about){
+        this.user_id = userID;
+        this.username = username;
+        this.u_profile_image = profile_image;
         this.about = about;
     }
 
@@ -41,11 +48,11 @@ public class User implements Serializable {
     }
 
     public String getEmail(){
-        return email;
+        return u_email;
     }
 
     public String getPassword(){
-        return password;
+        return u_password;
     }
 
     public String getAbout() {
@@ -53,6 +60,6 @@ public class User implements Serializable {
     }
 
     public String getProfile_image() {
-        return profile_image;
+        return u_profile_image;
     }
 }

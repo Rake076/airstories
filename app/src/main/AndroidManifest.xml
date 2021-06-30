@@ -159,6 +159,17 @@
             android:theme="@style/Theme.Airstories.NoActionBar">
         </activity>
 
+        <activity
+            android:name=".RecommendUsersActivity"
+            android:theme="@style/Theme.Airstories.NoActionBar">
+        </activity>
+
+
+        <activity
+            android:name=".RecommendationsActivity"
+            android:theme="@style/Theme.Airstories.NoActionBar">
+        </activity>
+
     </application>
 
 </manifest>

@@ -168,6 +168,30 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
     }
 
 
+    public void removeShortStoryFromReadingList(int user_id, int story_id){
+        compositeDisposable.add(myAPI.removeShortStoryFromReadingList(user_id, story_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                               @Override
+                               public void accept(String s) throws Exception {
+                               }
+                           }
+                ));
+    }
+
+    public void removeStoryFromReadingList(int user_id, int story_id){
+        compositeDisposable.add(myAPI.removeStoryFromReadingList(user_id, story_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                               @Override
+                               public void accept(String s) throws Exception {
+                               }
+                           }
+                ));
+    }
+
     public void storyNetworkCall() {
         storyListCall = jsonPlaceHolderApi.getStories();
         storyListCall.enqueue(new Callback<List<Stories>>() {
@@ -343,6 +367,39 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
         });
     }
 
+
+    public void shortTitleGenre(String shortGenre) {
+        listCall = jsonPlaceHolderApi.getShortStoriesGenre(shortGenre);
+        listCall.enqueue(new Callback<List<ShortStories>>() {
+            @Override
+            public void onResponse(Call<List<ShortStories>> call, Response<List<ShortStories>> response) {
+
+                if (!response.isSuccessful()) {
+                    Log.d("Code", "Code: " + response.code());
+                    Toast.makeText(getApplicationContext(), "Code: " + response.code(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                List<ShortStories> stories = response.body();
+                shortStoryObject.clear();
+
+                for (ShortStories Stories : stories) {
+                    shortStoryObject.add(new ShortStories(Stories.getshortID(), Stories.getShortTitle(),
+                            Stories.getShortStory(), Stories.getShortGenre(), Stories.getAppCount(),
+                            Stories.getShortDescription(), Stories.getUsername(), Stories.getCoverImage()));
+//                    textView.append(data);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ShortStories>> call, Throwable t) {
+
+
+            }
+
+        });
+    }
+
     public void storyTitleSearch(String storyTitle) {
         storyListCall = jsonPlaceHolderApi.getStoriesTitle(storyTitle);
         storyListCall.enqueue(new Callback<List<Stories>>() {
@@ -375,6 +432,38 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
         });
     }
 
+
+    public void storyGenreSearch(String storyGenre) {
+        storyListCall = jsonPlaceHolderApi.getStoriesGenre(storyGenre);
+        storyListCall.enqueue(new Callback<List<Stories>>() {
+            @Override
+            public void onResponse(Call<List<Stories>> call, Response<List<Stories>> response) {
+
+                if (!response.isSuccessful()) {
+//                    textView.setText("Code " + response.code());
+                    return;
+                }
+
+                List<Stories> stories = response.body();
+
+                StoryObject.clear();
+                for (Stories Stories : stories) {
+
+//                    int story_id, String story_title, String story_description, String story_genre, int status,
+//                    int likes, int readings, int chapters, String username, String coverImage
+
+                    StoryObject.add(new Stories(Stories.getStory_id(), Stories.getStory_title(),
+                            Stories.getStory_description(), Stories.getStory_genre(), Stories.getStatus(),
+                            Stories.getLikes(), Stories.getReadings(), Stories.getChapters(), Stories.getUsername(), Stories.getCoverImage()));
+//                    textView.append(data);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Stories>> call, Throwable t) {
+            }
+        });
+    }
 
 
     @Override

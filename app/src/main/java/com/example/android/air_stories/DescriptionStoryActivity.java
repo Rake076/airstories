@@ -53,6 +53,7 @@ public class DescriptionStoryActivity extends AppCompatActivity implements Seria
     ListView listView;
     AdapterChapter adapter;
 
+    MaterialButton recommendBtn;
     int userID, story_id;
     Intent intent;
     TextView username_textview;
@@ -73,6 +74,7 @@ public class DescriptionStoryActivity extends AppCompatActivity implements Seria
         Stories story = (Stories) intent.getSerializableExtra("Story");
         User user = (User) intent.getSerializableExtra("user");
 
+        recommendBtn = findViewById(R.id.recommend_btn);
         RelativeLayout chapters_layout = findViewById(R.id.chapter_view);
         story_id = story.getStory_id();
 
@@ -102,6 +104,15 @@ public class DescriptionStoryActivity extends AppCompatActivity implements Seria
             }
         });
 
+        recommendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), RecommendUsersActivity.class);
+                intent.putExtra("story", story);
+                intent.putExtra("storyType", "story");
+                startActivity(intent);
+            }
+        });
 //        networkCall();
 
 //        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

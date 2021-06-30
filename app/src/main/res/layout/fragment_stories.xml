@@ -94,7 +94,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_margin="16dp"
                     android:layout_alignParentTop="true"
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/search_edit_text_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -102,12 +102,18 @@
                     android:hint="Search">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/search_edit_text"
                         android:inputType="text"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_more_vert_24"
+                    android:layout_toRightOf="@id/search_edit_text_layout"/>
 
                 <View
                     android:layout_width="match_parent"

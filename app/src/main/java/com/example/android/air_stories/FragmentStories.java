@@ -94,6 +94,13 @@ public class FragmentStories extends Fragment implements Serializable {
 
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+    }
 
     public void onViewCreated(View V, Bundle savedInstanceState){
 
@@ -141,7 +148,7 @@ public class FragmentStories extends Fragment implements Serializable {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 //                listView.setOnItemClickListener(null);
 
-                String[] options = {"Add to Reading List", "Recommend"};
+                String[] options = {"Add to Reading List"};
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Options");
@@ -162,9 +169,6 @@ public class FragmentStories extends Fragment implements Serializable {
                             }
 
 
-                        }
-                        else if ("Recommend".equals(options[which])){
-                            Toast.makeText(getActivity(), "Hhahaha", Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -286,13 +290,13 @@ public class FragmentStories extends Fragment implements Serializable {
         });
 
 
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
+//        final Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
                 refreshListView();
-            }
-        }, 500);
+//            }
+//        }, 500);
 
 
         return rootView;

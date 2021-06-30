@@ -39,13 +39,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="16sp"
+        android:layout_marginTop="32dp"
         android:layout_below="@id/username_textview"
         android:id="@+id/edit_profile_layout">
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginRight="40dp"
             android:background="@color/lighterGrey"
             android:layout_alignParentTop="true"/>
 
@@ -83,6 +84,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginRight="40dp"
             android:background="@color/lighterGrey"
             android:layout_alignParentTop="true"/>
 
@@ -108,16 +110,54 @@
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
         android:layout_below="@id/write_journal_layout"
+        android:id="@+id/recommendation_layout">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginRight="40dp"
+            android:background="@color/lighterGrey"
+            android:layout_alignParentTop="true"/>
+
+        <TextView
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recommendations"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:fontFamily="@font/roboto_light"
+            android:layout_alignParentLeft="true"/>
+
+        <TextView
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=">"
+            android:textSize="16sp"
+            android:fontFamily="@font/roboto_light"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/recommendation_layout"
         android:id="@+id/logout_layout">
 
         <View
+            android:layout_marginRight="40dp"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/lighterGrey"

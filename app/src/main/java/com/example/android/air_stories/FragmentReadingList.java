@@ -98,6 +98,15 @@ public class FragmentReadingList extends Fragment implements Serializable {
 
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+
 
     public void onViewCreated(View V, Bundle savedInstanceState){
 
@@ -142,7 +151,7 @@ public class FragmentReadingList extends Fragment implements Serializable {
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
 //                listView.setOnItemClickListener(null);
 
                 String[] options = {"Remove"};
@@ -155,7 +164,17 @@ public class FragmentReadingList extends Fragment implements Serializable {
                         // the user clicked on colors[which]
 
                         if("Remove".equals(options[which])){
-                            Toast.makeText(getActivity(), "Hhahaha", Toast.LENGTH_SHORT).show();
+                            if(switchMaterial.isChecked()){
+                                ShortStories shortStory = shortStoryObject.get(position);
+                                homeActivity.removeShortStoryFromReadingList(SaveSharedPreference.getUserID(getActivity()), shortStory.getshortID());
+                                Toast.makeText(homeActivity, "Short Story has been removed from the reading list.", Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Stories story = StoryObject.get(position);
+                                homeActivity.removeStoryFromReadingList(SaveSharedPreference.getUserID(getActivity()), story.getStory_id());
+                                Toast.makeText(homeActivity, "Story has been removed from the reading list.", Toast.LENGTH_SHORT).show();
+                            }
+                            refreshListView();
                         }
 
                     }
@@ -224,13 +243,13 @@ public class FragmentReadingList extends Fragment implements Serializable {
         });
 
 
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
+//        final Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
                 refreshListView();
-            }
-        }, 100);
+//            }
+//        }, 100);
 
 
 

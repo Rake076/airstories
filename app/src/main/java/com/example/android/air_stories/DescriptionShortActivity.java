@@ -21,7 +21,7 @@ public class DescriptionShortActivity extends AppCompatActivity implements Seria
     ImageView imageView;
     TextView title, username, appCount, description;
 
-    MaterialButton readbtn;
+    MaterialButton readbtn, recomment_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,7 @@ public class DescriptionShortActivity extends AppCompatActivity implements Seria
                     .into(imageView);
 
             readbtn = findViewById(R.id.read_btn);
-
+            
             readbtn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
@@ -60,6 +60,17 @@ public class DescriptionShortActivity extends AppCompatActivity implements Seria
                     intent.putExtra("user", user);
                     startActivity(intent);
 
+                }
+            });
+            
+            recomment_btn = findViewById(R.id.recommend_btn);
+            recomment_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), RecommendUsersActivity.class);
+                    intent.putExtra("shortStory", shortStory);
+                    intent.putExtra("storyType", "short_story");
+                    startActivity(intent);
                 }
             });
 

@@ -174,15 +174,15 @@
             android:layout_height="1dp"
             android:background="#363636"/>
 
-<!--        <ListView-->
-<!--            android:layout_marginTop="8dp"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:id="@+id/chapter_listview"-->
-<!--            android:layout_below="@id/chapter_view"-->
-<!--            android:nestedScrollingEnabled="true"-->
-<!--            android:layout_marginBottom="100dp"/>-->
-
+        <com.google.android.material.button.MaterialButton
+            android:layout_marginTop="16dp"
+            android:id="@+id/recommend_btn"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/chapter_view"
+            android:layout_centerHorizontal="true"
+            android:text="Recommend"
+            android:backgroundTint="@color/black"/>
 
     </RelativeLayout>
 
