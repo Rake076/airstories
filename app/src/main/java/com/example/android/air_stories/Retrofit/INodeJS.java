@@ -47,12 +47,13 @@ public interface INodeJS {
                                                 @Part("about") String about,
                                                 @Part MultipartBody.Part image);
 
-    @GET("users")
-    Observable<String> getUsers();
 
     @GET("users")
     Call<List<User>> getUsersData(@Query("user_id") int user_id);
 
+    @GET("users/search")
+    Call<List<User>> SearchUsersData(@Query("user_id") int user_id,
+                                     @Query("username") String username);
 
     @POST("users/recommend")
     @FormUrlEncoded
@@ -166,6 +167,22 @@ public interface INodeJS {
     Observable<String> submitStoryComment(@Field("story_id") int story_id,
                                           @Field("user_id") int user_id,
                                           @Field("comment") String comment);
+
+    @GET("shortStories/delete")
+    Observable<String> deleteShortStories(@Query("user_id") int user_id,
+                                          @Query("story_id") int shortID);
+
+    @GET("stories/delete")
+    Observable<String> deleteStories(@Query("user_id") int user_id,
+                                          @Query("story_id") int story_id);
+
+    @GET("stories/publish")
+    Observable<String> publishStories(@Query("user_id") int user_id,
+                                     @Query("story_id") int story_id);
+
+    @GET("stories/unpublish")
+    Observable<String> unpublishStories(@Query("user_id") int user_id,
+                                     @Query("story_id") int story_id);
 
 
     @GET("stories/chapters")

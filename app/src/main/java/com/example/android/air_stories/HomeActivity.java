@@ -133,6 +133,15 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
         BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
 
+        shortNetworkCall();
+        storyNetworkCall();
+
+        fragment = getSupportFragmentManager().findFragmentByTag("HomeFrag");
+        if (fragment == null || !fragment.isVisible()) {
+            // not exist
+            openFragment(R.id.fragment_layout, FragmentHome.newInstance("", ""), "HomeFrag");
+            globalTag = "HomeFrag";
+        }
 
     }
 
@@ -476,6 +485,15 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
                 @Override public boolean onNavigationItemSelected(@Nullable MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.home_btn:
+                            shortNetworkCall();
+                            storyNetworkCall();
+
+                            fragment = getSupportFragmentManager().findFragmentByTag("HomeFrag");
+                            if (fragment == null || !fragment.isVisible()) {
+                                // not exist
+                                openFragment(R.id.fragment_layout, FragmentHome.newInstance("", ""), "HomeFrag");
+                                globalTag = "StoryFrag";
+                            }
                             return true;
                         case R.id.search_btn:
                             shortNetworkCall();

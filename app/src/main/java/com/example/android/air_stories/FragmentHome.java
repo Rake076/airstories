@@ -1,7 +1,5 @@
 package com.example.android.air_stories;
 
-import androidx.fragment.app.Fragment;
-import java.io.Serializable;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,18 +7,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -38,7 +32,8 @@ import org.json.JSONException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class FragmentReadingList extends Fragment implements Serializable {
+public class FragmentHome extends Fragment implements Serializable {
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -56,10 +51,10 @@ public class FragmentReadingList extends Fragment implements Serializable {
      * @return A new instance of fragment NotificationFragment.
      */
     // TODO: Rename and change types and number of parameters
-
     MaterialButton button;
     TextView textView;
     //            TextView username_textview;
+    TextInputEditText search;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -75,17 +70,16 @@ public class FragmentReadingList extends Fragment implements Serializable {
     ArrayList<ShortStories> shortStoryObject = new ArrayList<>();
     ArrayList<Stories> StoryObject = new ArrayList<>();
 
-    public FragmentReadingList(){}
+    public FragmentHome(){}
 
-    public static FragmentReadingList newInstance(String param1, String param2) {
-        FragmentReadingList fragment = new FragmentReadingList();
+    public static FragmentHome newInstance(String param1, String param2) {
+        FragmentHome fragment = new FragmentHome();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,8 +99,6 @@ public class FragmentReadingList extends Fragment implements Serializable {
             mSwipeRefreshLayout.setRefreshing(false);
         }
     }
-
-
 
     public void onViewCreated(View V, Bundle savedInstanceState){
 
@@ -151,10 +143,10 @@ public class FragmentReadingList extends Fragment implements Serializable {
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 //                listView.setOnItemClickListener(null);
 
-                String[] options = {"Remove"};
+                String[] options = {"Add to Reading List"};
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Options");
@@ -163,18 +155,18 @@ public class FragmentReadingList extends Fragment implements Serializable {
                     public void onClick(DialogInterface dialog, int which) {
                         // the user clicked on colors[which]
 
-                        if("Remove".equals(options[which])){
-                            if(switchMaterial.isChecked()){
-                                ShortStories shortStory = shortStoryObject.get(position);
-                                homeActivity.removeShortStoryFromReadingList(SaveSharedPreference.getUserID(getActivity()), shortStory.getshortID());
-                                Toast.makeText(homeActivity, "Short Story has been removed from the reading list.", Toast.LENGTH_SHORT).show();
+                        if("Add to Reading List".equals(options[which])){
+
+
+                            if (switchMaterial.isChecked()){
+                                homeActivity.addShortReadingList(user.getUserID(), shortStoryObject.get(i).getshortID());
+
                             }
                             else{
-                                Stories story = StoryObject.get(position);
-                                homeActivity.removeStoryFromReadingList(SaveSharedPreference.getUserID(getActivity()), story.getStory_id());
-                                Toast.makeText(homeActivity, "Story has been removed from the reading list.", Toast.LENGTH_SHORT).show();
+                                homeActivity.addStoryReadingList(user.getUserID(), StoryObject.get(i).getStory_id());
                             }
-                            refreshListView();
+
+
                         }
 
                     }
@@ -184,39 +176,92 @@ public class FragmentReadingList extends Fragment implements Serializable {
                 return false;
             }
         });
-
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        search.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onRefresh() {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String title = search.getText().toString();
+
+                if (switchMaterial.isChecked()){
+                    switchMaterial.setText("Short Stories");
+                    homeActivity.shortTitleSearch(title);
+//                    shortStoryObject = homeActivity.getShortStoriesData();
+//                    AdapterShort adapter = new AdapterShort(getActivity(), shortStoryObject);
+//                    listView.setAdapter(adapter);
+                }
+                else{
+                    switchMaterial.setText("Stories");
+                    homeActivity.storyTitleSearch(title);
+//                    StoryObject = homeActivity.getStoriesData();
+//                    AdapterStory storyAdapter = new AdapterStory(getActivity(), StoryObject);
+//                    listView.setAdapter(storyAdapter);
+                }
+//                refreshListViewWithoutNetworkCall();
+
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if(mSwipeRefreshLayout.isRefreshing()) {
-                            mSwipeRefreshLayout.setRefreshing(false);
-                            refreshListView();
-                        }
+                        refreshListViewWithoutNetworkCall();
                     }
                 }, 500);
+
+
+
+
 
 
 
             }
         });
 
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if(mSwipeRefreshLayout.isRefreshing()) {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                            search.setText("");
+//                            refreshListView();
+                            refreshNetworkCall();
+                            refreshListViewWithoutNetworkCall();
+                        }
+                    }
+                }, 1000);
+
+
+
+
+            }
+        });
     }
 
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_reading_list, container, false);
-
+        final View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        search = rootView.findViewById(R.id.search_edit_text);
+        //search.setOnKeyListener((View.OnKeyListener) this);
         setHomeActivity();
         user = homeActivity.getUserdata();
 
-        listView = (ListView) rootView.findViewById(R.id.reading_list_story_list_view);
-
+        listView = (ListView) rootView.findViewById(R.id.short_story_list_view);
         mSwipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh_stories);
 
         switchMaterial = rootView.findViewById(R.id.switch1);
@@ -227,15 +272,15 @@ public class FragmentReadingList extends Fragment implements Serializable {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (switchMaterial.isChecked()){
                     switchMaterial.setText("Short Stories");
-                    homeActivity.shortReadingListNetworkCall();
-                    shortStoryObject = homeActivity.getShortReadingData();
+                    homeActivity.shortNetworkCall();
+                    shortStoryObject = homeActivity.getShortStoriesData();
                     AdapterShort adapter = new AdapterShort(getActivity(), shortStoryObject);
                     listView.setAdapter(adapter);
                 }
                 else{
                     switchMaterial.setText("Stories");
-                    homeActivity.storyReadingListNetworkCall();
-                    StoryObject = homeActivity.getStoryReadingData();
+                    homeActivity.storyNetworkCall();
+                    StoryObject = homeActivity.getStoriesData();
                     AdapterStory storyAdapter = new AdapterStory(getActivity(), StoryObject);
                     listView.setAdapter(storyAdapter);
                 }
@@ -247,11 +292,9 @@ public class FragmentReadingList extends Fragment implements Serializable {
 //        handler.postDelayed(new Runnable() {
 //            @Override
 //            public void run() {
-                refreshListView();
+        refreshListView();
 //            }
-//        }, 100);
-
-
+//        }, 500);
 
 
         return rootView;
@@ -260,32 +303,59 @@ public class FragmentReadingList extends Fragment implements Serializable {
 
 
     private void refreshListView(){
-
         if(switchMaterial.isChecked()){
-            homeActivity.shortReadingListNetworkCall();
-            shortStoryObject = homeActivity.getShortReadingData();
+            homeActivity.shortNetworkCall();
+            shortStoryObject = homeActivity.getShortStoriesData();
             AdapterShort adapter = new AdapterShort(getActivity(), shortStoryObject);
             listView.setAdapter(adapter);
         }
         else{
-            homeActivity.storyReadingListNetworkCall();
-            StoryObject = homeActivity.getStoryReadingData();
+            homeActivity.storyNetworkCall();
+            StoryObject = homeActivity.getStoriesData();
             AdapterStory adapter = new AdapterStory(getActivity(), StoryObject);
             listView.setAdapter(adapter);
         }
+    }
 
+    private void refreshListViewWithoutNetworkCall(){
+        if(switchMaterial.isChecked()){
+            shortStoryObject = homeActivity.getShortStoriesData();
+            AdapterShort adapter = new AdapterShort(getActivity(), shortStoryObject);
+            listView.setAdapter(adapter);
+        }
+        else{
+            StoryObject = homeActivity.getStoriesData();
+            AdapterStory adapter = new AdapterStory(getActivity(), StoryObject);
+            listView.setAdapter(adapter);
+        }
+    }
+
+    private void refreshNetworkCall(){
+        if(switchMaterial.isChecked()){
+            homeActivity.shortNetworkCall();
+        }
+        else{
+            homeActivity.storyNetworkCall();
+        }
     }
 
 
     private void setUsername() throws JSONException {
+//        String userJson = homeActivity.getStringuserdata();
 
         user = homeActivity.getUserdata();
 
+//        JSONObject jsonObject = new JSONObject(userJson);
+//        String username = jsonObject.getString("username");
+
+//        username_textview.setText(user.getUsername());
     }
 
     private void setHomeActivity(){
         homeActivity = (HomeActivity) getActivity();
     }
+
+
 
 
 }

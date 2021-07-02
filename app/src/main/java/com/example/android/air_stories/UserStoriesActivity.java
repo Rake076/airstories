@@ -1,5 +1,7 @@
 package com.example.android.air_stories;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +22,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.android.air_stories.Model.ShortStories;
 import com.example.android.air_stories.Model.Stories;
+import com.example.android.air_stories.Model.User;
 import com.example.android.air_stories.Retrofit.INodeJS;
 import com.example.android.air_stories.Retrofit.RetrofitClient;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -28,7 +31,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,10 +62,16 @@ public class UserStoriesActivity extends AppCompatActivity {
     Retrofit Bretrofit = RetrofitClient.getClient();
     INodeJS jsonPlaceHolderApi = Bretrofit.create(INodeJS.class);
 
+    Retrofit retrofit = RetrofitClient.getInstance();
+    INodeJS myAPI = retrofit.create(INodeJS.class);
+
 //    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     final ArrayList<ShortStories> shortStoryObject = new ArrayList<>();
     final ArrayList<Stories> StoryObject = new ArrayList<>();
+
+
+
 
 
     @Override
@@ -80,6 +92,9 @@ public class UserStoriesActivity extends AppCompatActivity {
 
 
         listView = (ListView)findViewById(R.id.short_story_list_view);
+
+
+
 
 
         AdapterShort adapter = new AdapterShort(getApplicationContext(), shortStoryObject);
@@ -126,6 +141,72 @@ public class UserStoriesActivity extends AppCompatActivity {
             }
         });
 
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                String[] options = {"Yes", "No"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(UserStoriesActivity.this);
+
+                if(switchMaterial.isChecked()){
+                    // Short Stories
+                    builder.setTitle("Delete short story?");
+                    builder.setItems(options, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if("Yes".equals(options[which])){
+                                deleteShortStories(shortStoryObject.get(i).getshortID());
+                                shortStoryObject.remove(i);
+                                AdapterShort adapter = new AdapterShort(getApplicationContext(), shortStoryObject);
+                                listView.setAdapter(adapter);
+                            }
+                            else if ("No".equals(options[which])){
+                            }
+                        }
+                    });
+                    builder.show();
+
+                }
+                else {
+                    // Stories
+                    String[] storyOptions = {"Delete Story", "Unpublish"};
+
+                    int status = StoryObject.get(i).getStatus();
+                    if(status == 1)
+                    {
+                        storyOptions[1] = "Unpublish";
+                    }
+                    else
+                    {
+                        storyOptions[1] = "Publish";
+                    }
+                    builder.setTitle("Options");
+                    builder.setItems(storyOptions, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if( storyOptions[0].equals(storyOptions[which]) ){
+                                deleteStories(StoryObject.get(i).getStory_id());
+                                StoryObject.remove(i);
+                                AdapterStory adapter = new AdapterStory(getApplicationContext(), StoryObject);
+                                listView.setAdapter(adapter);
+                            }
+                            else if ("Publish".equals(storyOptions[which])){
+                               publishStories(StoryObject.get(i).getStory_id());
+                            }
+                            else if ("Unpublish".equals(storyOptions[which])){
+                                unpublishStories(StoryObject.get(i).getStory_id());
+                            }
+                        }
+                    });
+                    builder.show();
+
+                }
+
+
+
+                return false;
+            }
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
@@ -185,6 +266,84 @@ public class UserStoriesActivity extends AppCompatActivity {
 
     }
 
+
+
+
+
+    public void deleteShortStories(int shortID){
+        compositeDisposable.add(myAPI.deleteShortStories(SaveSharedPreference.getUserID(getApplication()), shortID)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                               @Override
+                               public void accept(String s) throws Exception {
+//                                   if (s.contains("liked")) {
+//                                       Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+//                                   } else {
+//                                       Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+//                                   }
+                                   Toast.makeText(getApplicationContext(), "Short Story successfully deleted", Toast.LENGTH_SHORT).show();
+                               }
+                           }
+                ));
+    }
+
+
+    public void deleteStories(int story_ID){
+        compositeDisposable.add(myAPI.deleteStories(SaveSharedPreference.getUserID(getApplication()), story_ID)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                               @Override
+                               public void accept(String s) throws Exception {
+//                                   if (s.contains("liked")) {
+//                                       Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+//                                   } else {
+//                                       Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+//                                   }
+                                   Toast.makeText(getApplicationContext(), "Story successfully deleted", Toast.LENGTH_SHORT).show();
+                               }
+                           }
+                ));
+    }
+
+
+    public void publishStories(int story_id){
+        compositeDisposable.add(myAPI.publishStories(SaveSharedPreference.getUserID(getApplication()), story_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                               @Override
+                               public void accept(String s) throws Exception {
+//                                   if (s.contains("liked")) {
+//                                       Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+//                                   } else {
+//                                       Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+//                                   }
+                                   Toast.makeText(getApplicationContext(), "Short Story successfully published", Toast.LENGTH_SHORT).show();
+                               }
+                           }
+                ));
+    }
+
+
+    public void unpublishStories(int story_id){
+        compositeDisposable.add(myAPI.unpublishStories(SaveSharedPreference.getUserID(getApplication()), story_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                               @Override
+                               public void accept(String s) throws Exception {
+//                                   if (s.contains("liked")) {
+//                                       Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+//                                   } else {
+//                                       Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+//                                   }
+                                   Toast.makeText(getApplicationContext(), "Short Story successfully unpublished!", Toast.LENGTH_SHORT).show();
+                               }
+                           }
+                ));
+    }
 
     public void storyNetworkCall() {
         storyListCall = jsonPlaceHolderApi.getUserStories(userID);

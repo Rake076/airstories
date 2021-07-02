@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -52,6 +55,7 @@ import com.example.android.air_stories.Model.User;
 import com.example.android.air_stories.Retrofit.INodeJS;
 import com.example.android.air_stories.Retrofit.RetrofitClient;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -84,6 +88,8 @@ public class RecommendUsersActivity extends AppCompatActivity{
     ArrayList<User> usersObject = new ArrayList<>();
     int recommender_id, storyID;
 
+    TextInputEditText searchEditText;
+
 
 //    TextView username_textview;
     @Override
@@ -93,6 +99,8 @@ public class RecommendUsersActivity extends AppCompatActivity{
 
         Intent intent = getIntent();
         storyType = intent.getStringExtra("storyType");
+
+        searchEditText = findViewById(R.id.search_edit_text);
 
         // Init API
         retrofit = RetrofitClient.getInstance();
@@ -112,6 +120,35 @@ public class RecommendUsersActivity extends AppCompatActivity{
         listView = findViewById(R.id.user_list_view);
 
         networkCall();
+
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String username = searchEditText.getText().toString();
+
+
+                searchNetworkCall(username);
+
+//                final Handler handler = new Handler();
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                    }
+//                }, 500);
+            }
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -134,7 +171,7 @@ public class RecommendUsersActivity extends AppCompatActivity{
                             recommendStory(recommender_id, recommendee_id, storyID, storyType);
                         }
                         else if ("No".equals(options[which])){
-                            Toast.makeText(getApplicationContext(), "Nohoho", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getApplicationContext(), "Nohoho", Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -193,6 +230,36 @@ public class RecommendUsersActivity extends AppCompatActivity{
         });
     }
 
+
+    public void searchNetworkCall(String username) {
+        listCall = jsonPlaceHolderApi.SearchUsersData(SaveSharedPreference.getUserID(getApplication()), username);
+        listCall.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Code: " + response.code(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                usersObject.clear();
+                List<User> users = response.body();
+
+                for (User user : users) {
+                    usersObject.add(new User(user.getUserID(), user.getUsername(), user.getProfile_image(), user.getAbout()));
+//                    Toast.makeText(getApplicationContext(), user.getUserID(), Toast.LENGTH_SHORT).show();
+                }
+
+                AdapterUser adapter = new AdapterUser(getApplicationContext(), usersObject);
+                listView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+
+            }
+
+        });
+    }
 
 
 }
