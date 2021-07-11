@@ -50,7 +50,7 @@ public class ShortReadingActivity extends AppCompatActivity {
     INodeJS jsonPlaceHolderApi = Bretrofit.create(INodeJS.class);
 
     Boolean isFilled = false;
-    ImageView like_btn, comment_btn;
+    ImageView like_btn, comment_btn, report_btn;
 
 
     @Override
@@ -69,7 +69,7 @@ public class ShortReadingActivity extends AppCompatActivity {
 
         like_btn = findViewById(R.id.like_btn);
         comment_btn = findViewById(R.id.comment_btn);
-
+        report_btn = findViewById(R.id.report_btn);
 
         short_story_textview = (AreTextView) findViewById(R.id.short_story_textview);
         title_textview = findViewById(R.id.short_title_textview);
@@ -107,6 +107,16 @@ public class ShortReadingActivity extends AppCompatActivity {
             }
         });
 
+        report_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ReportActivity.class);
+                intent.putExtra("story", shortStory);
+                intent.putExtra("storyType", "Short Story");
+
+                startActivity(intent);
+            }
+        });
 
     }
 

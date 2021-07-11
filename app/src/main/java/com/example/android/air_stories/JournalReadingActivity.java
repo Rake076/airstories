@@ -15,7 +15,7 @@ public class JournalReadingActivity extends AppCompatActivity {
 
     AreTextView journal_textview;
     TextView title_textview;
-    ImageView like_btn, comment_btn;
+    ImageView like_btn, comment_btn, report_btn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,6 +38,8 @@ public class JournalReadingActivity extends AppCompatActivity {
         like_btn.setImageDrawable(null);
         comment_btn.setImageDrawable(null);
 
+        report_btn = findViewById(R.id.report_btn);
+        report_btn.setImageDrawable(null);
 
     }
 }

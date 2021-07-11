@@ -48,6 +48,7 @@ import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Superscript;
 import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Underline;
 import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Video;
 import com.chinalwb.are.styles.toolitems.IARE_ToolItem;
+import com.example.android.air_stories.Model.Chapters;
 import com.example.android.air_stories.Model.ShortStories;
 import com.example.android.air_stories.Model.User;
 import com.example.android.air_stories.Retrofit.INodeJS;
@@ -77,8 +78,8 @@ public class ChapterEditActivity extends AppCompatActivity{
     TextView title_textview, textcount_textview;
     EditText chapter_title_edit;
     MaterialButton publish_btn;
-    String title, description, chapter_text, type, genre, chapter_title;
-    int userID = 0;
+    String chapter_text, chapter_title;
+    int chapter_id;
 
 
     ImageView imageView;
@@ -100,12 +101,18 @@ public class ChapterEditActivity extends AppCompatActivity{
         Intent intent = getIntent();
         initToolbar();
 
-        title = intent.getStringExtra("title");
-        description = intent.getStringExtra("description");
+        Chapters chapter = (Chapters) intent.getSerializableExtra("chapter");
 
-        userID = intent.getIntExtra("userID", 0);
+        chapter_title = chapter.getChapter_name();
+        chapter_id = chapter.getChapter_id();
+        chapter_text = chapter.getChapter_text();
+
 
         chapter_title_edit = findViewById(R.id.chapter_title_edit);
+
+        chapter_title_edit.setText(chapter.getChapter_name());
+        mEditText.fromHtml(chapter_text);
+
         textcount_textview = findViewById(R.id.text_count);
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -116,7 +123,6 @@ public class ChapterEditActivity extends AppCompatActivity{
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-
                 if(mEditText.getText().length()<200){
                     textcount_textview.setTextColor(Color.parseColor("#FF1100"));
                 }
@@ -125,7 +131,6 @@ public class ChapterEditActivity extends AppCompatActivity{
                 }
                 textcount_textview.setText(mEditText.getText().length() + "");
             }
-
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -154,7 +159,7 @@ public class ChapterEditActivity extends AppCompatActivity{
                     chapter_text = mEditText.getHtml();
                     chapter_title = chapter_title_edit.getText().toString();
 
-                    submitStory(userID, title, genre, description, chapter_title, chapter_text, fileBody);
+                    editChapter(chapter_id, chapter_title, chapter_text);
                     finish();
                 }
             }
@@ -162,26 +167,44 @@ public class ChapterEditActivity extends AppCompatActivity{
 
     }
 
-    private void submitStory(int userID, String storyTitle, String genre, String description, String chapter_title, String chapter_text, MultipartBody.Part fileBody) {
-        compositeDisposable.add(myAPI.submitStories(userID, title, genre, description, chapter_title, chapter_text, fileBody)
+
+    private void editChapter(int chapter_id, String chapter_title, String chapter_text) {
+        compositeDisposable.add(myAPI.editChapters(chapter_id, chapter_title, chapter_text)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<ResponseBody>() {
-                    @Override
-                    public void accept(ResponseBody responseBody) throws Exception {
-                        if(responseBody.toString().contains("successfully")){
-                            Toast.makeText(getApplicationContext(), "Story has been uploaded successfully", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            Toast.makeText(getApplicationContext(), "Story has been uploaded successfully", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-//                    @Override
-//                    public void accept(String s) throws Exception {
-//
-//                    }
-                }));
+                .subscribe(new Consumer<String>() {
+                               @Override
+                               public void accept(String s) throws Exception {
+                                   if (s.contains("successfully")) {
+                                       Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+                                   } else {
+                                       Toast.makeText(getApplicationContext(), "Chapter has been edited!", Toast.LENGTH_SHORT).show();
+                                   }
+                               }
+                           }
+                ));
     }
+
+//    private void editChapter(int chapter_id, String chapter_title, String chapter_text) {
+//        compositeDisposable.add(myAPI.editChapters(chapter_id, chapter_title, chapter_text)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Consumer<ResponseBody>() {
+//                    @Override
+//                    public void accept(ResponseBody responseBody) throws Exception {
+//                        if(responseBody.toString().contains("successfully")){
+//                            Toast.makeText(getApplicationContext(), "Story has been uploaded successfully", Toast.LENGTH_SHORT).show();
+//                        }
+//                        else{
+//                            Toast.makeText(getApplicationContext(), "Story has been uploaded successfully", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+////                    @Override
+////                    public void accept(String s) throws Exception {
+////
+////                    }
+//                }));
+//    }
 
 
 

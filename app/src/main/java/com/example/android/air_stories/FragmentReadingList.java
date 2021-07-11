@@ -168,11 +168,21 @@ public class FragmentReadingList extends Fragment implements Serializable {
                                 ShortStories shortStory = shortStoryObject.get(position);
                                 homeActivity.removeShortStoryFromReadingList(SaveSharedPreference.getUserID(getActivity()), shortStory.getshortID());
                                 Toast.makeText(homeActivity, "Short Story has been removed from the reading list.", Toast.LENGTH_SHORT).show();
+
+                                shortStoryObject.remove(position);
+                                AdapterShort adapter = new AdapterShort(getActivity(), shortStoryObject);
+                                listView.setAdapter(adapter);
+
                             }
                             else{
                                 Stories story = StoryObject.get(position);
                                 homeActivity.removeStoryFromReadingList(SaveSharedPreference.getUserID(getActivity()), story.getStory_id());
                                 Toast.makeText(homeActivity, "Story has been removed from the reading list.", Toast.LENGTH_SHORT).show();
+
+                                StoryObject.remove(position);
+                                AdapterStory adapter = new AdapterStory(getActivity(), StoryObject);
+                                listView.setAdapter(adapter);
+
                             }
                             refreshListView();
                         }
@@ -229,15 +239,33 @@ public class FragmentReadingList extends Fragment implements Serializable {
                     switchMaterial.setText("Short Stories");
                     homeActivity.shortReadingListNetworkCall();
                     shortStoryObject = homeActivity.getShortReadingData();
-                    AdapterShort adapter = new AdapterShort(getActivity(), shortStoryObject);
-                    listView.setAdapter(adapter);
+                    if(shortStoryObject.size() < 1){
+                        shortStoryObject.clear();
+                        Toast.makeText(homeActivity, "Ayo, dis empty!", Toast.LENGTH_SHORT).show();
+                        listView.setAdapter(null);
+                    }
+                    else{
+                        AdapterShort adapter = new AdapterShort(getActivity(), shortStoryObject);
+                        listView.setAdapter(adapter);
+                    }
+
+
                 }
                 else{
                     switchMaterial.setText("Stories");
                     homeActivity.storyReadingListNetworkCall();
                     StoryObject = homeActivity.getStoryReadingData();
-                    AdapterStory storyAdapter = new AdapterStory(getActivity(), StoryObject);
-                    listView.setAdapter(storyAdapter);
+                    if(StoryObject.size() < 1){
+                        StoryObject.clear();
+                        Toast.makeText(homeActivity, "Ayo, dis empty!", Toast.LENGTH_SHORT).show();
+                        listView.setAdapter(null);
+                    }
+                    else{
+                        AdapterStory storyAdapter = new AdapterStory(getActivity(), StoryObject);
+                        listView.setAdapter(storyAdapter);
+                    }
+
+
                 }
             }
         });
@@ -264,14 +292,32 @@ public class FragmentReadingList extends Fragment implements Serializable {
         if(switchMaterial.isChecked()){
             homeActivity.shortReadingListNetworkCall();
             shortStoryObject = homeActivity.getShortReadingData();
-            AdapterShort adapter = new AdapterShort(getActivity(), shortStoryObject);
-            listView.setAdapter(adapter);
+            if(shortStoryObject.size() < 1){
+                shortStoryObject.clear();
+                Log.v("Ayo", "Works");
+                Toast.makeText(homeActivity, "Ayo, dis empty!", Toast.LENGTH_SHORT).show();
+                listView.setAdapter(null);
+            }
+            else{
+                AdapterShort adapter = new AdapterShort(getActivity(), shortStoryObject);
+                listView.setAdapter(adapter);
+            }
+
         }
         else{
+            Log.v("Ayo", "Works");
             homeActivity.storyReadingListNetworkCall();
             StoryObject = homeActivity.getStoryReadingData();
-            AdapterStory adapter = new AdapterStory(getActivity(), StoryObject);
-            listView.setAdapter(adapter);
+            if(StoryObject.size() < 1){
+                StoryObject.clear();
+                Toast.makeText(homeActivity, "Ayo, dis empty!", Toast.LENGTH_SHORT).show();
+                listView.setAdapter(null);
+            }
+            else{
+                AdapterStory storyAdapter = new AdapterStory(getActivity(), StoryObject);
+                listView.setAdapter(storyAdapter);
+            }
+
         }
 
     }

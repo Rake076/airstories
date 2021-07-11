@@ -188,6 +188,15 @@ public interface INodeJS {
     @GET("stories/chapters")
     Call<List<Chapters>> getStoryChapters(@Query("story_id")int story_id);
 
+    @POST("stories/chapters/edit")
+    @FormUrlEncoded
+    Observable<String> editChapters(@Field("chapter_id") int chapter_id,
+                                      @Field("chapter_name") String chapter_name,
+                                      @Field("chapter_text") String chapter_text);
+
+    @GET("stories/chapters/delete")
+    Observable<String> deleteChapters(@Query("chapter_id") int chapter_id);
+
     @GET("journals")
     Call<List<Journals>> getUserJournals(@Query("userID")int userID);
 
@@ -252,5 +261,12 @@ public interface INodeJS {
     Observable<String> submitChapters(@Field("story_id") int story_id,
                                             @Field("chapter_name") String chapter_title,
                                             @Field("chapter_text") String chapter_text);
+
+    @POST("report")
+    @FormUrlEncoded
+    Observable<String> reportStories(@Field("story_id") int story_id,
+                                    @Field("reporter") String reporter,
+                                    @Field("report_reason") String report_reason,
+                                    @Field("story_type") String story_type);
 
 }

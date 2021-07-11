@@ -1,0 +1,109 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="32dp"
+            android:textAlignment="center"
+            android:id="@+id/story_title_textview"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Ye to Title hoga"
+            android:textSize="18sp"/>
+
+
+
+        <TextView
+            android:textColor="@color/black"
+            android:id="@+id/username_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/story_title_textview"
+            android:text="John Wick"
+            android:fontFamily="@font/roboto_light"
+            android:textSize="16sp"/>
+
+
+        <RelativeLayout
+            android:id="@+id/description_layout"
+            android:layout_below="@id/username_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="@color/black"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Report"
+                android:background="@color/white"
+                android:paddingHorizontal="8dp"
+                android:translationZ="1dp"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:fontFamily="@font/roboto_light"
+                android:textSize="12sp"/>
+            <View
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#363636"/>
+        </RelativeLayout>
+
+
+        <TextView
+            android:textColor="@color/black"
+            android:id="@+id/story_type_textview"
+            android:layout_margin="16dp"
+            android:layout_below="@id/description_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_light"
+            android:text="Short Story"
+            android:layout_centerHorizontal="true"
+            android:textSize="16sp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_below="@id/story_type_textview"
+            android:id="@+id/report_text_inputlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            app:errorEnabled="true"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="Report Reason">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/report_reason_edit_text"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/report_btn"
+            android:layout_marginTop="8dp"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/report_text_inputlayout"
+            android:layout_centerHorizontal="true"
+            android:text="Report"/>
+
+    </RelativeLayout>
+
+</ScrollView>

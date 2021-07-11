@@ -54,7 +54,7 @@ public class FragmentHome extends Fragment implements Serializable {
     MaterialButton button;
     TextView textView;
     //            TextView username_textview;
-    TextInputEditText search;
+//    TextInputEditText search;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -176,54 +176,55 @@ public class FragmentHome extends Fragment implements Serializable {
                 return false;
             }
         });
-        search.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String title = search.getText().toString();
-
-                if (switchMaterial.isChecked()){
-                    switchMaterial.setText("Short Stories");
-                    homeActivity.shortTitleSearch(title);
-//                    shortStoryObject = homeActivity.getShortStoriesData();
-//                    AdapterShort adapter = new AdapterShort(getActivity(), shortStoryObject);
-//                    listView.setAdapter(adapter);
-                }
-                else{
-                    switchMaterial.setText("Stories");
-                    homeActivity.storyTitleSearch(title);
-//                    StoryObject = homeActivity.getStoriesData();
-//                    AdapterStory storyAdapter = new AdapterStory(getActivity(), StoryObject);
-//                    listView.setAdapter(storyAdapter);
-                }
-//                refreshListViewWithoutNetworkCall();
-
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        refreshListViewWithoutNetworkCall();
-                    }
-                }, 500);
-
-
-
-
-
-
-
-            }
-        });
+//        search.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//                String title = search.getText().toString();
+//
+//                if (switchMaterial.isChecked()){
+//                    switchMaterial.setText("Short Stories");
+//                    homeActivity.shortTitleSearch(title);
+////                    shortStoryObject = homeActivity.getShortStoriesData();
+////                    AdapterShort adapter = new AdapterShort(getActivity(), shortStoryObject);
+////                    listView.setAdapter(adapter);
+//                }
+//                else{
+//                    switchMaterial.setText("Stories");
+//                    homeActivity.storyTitleSearch(title);
+////                    StoryObject = homeActivity.getStoriesData();
+////                    AdapterStory storyAdapter = new AdapterStory(getActivity(), StoryObject);
+////                    listView.setAdapter(storyAdapter);
+//                }
+////                refreshListViewWithoutNetworkCall();
+//
+//                final Handler handler = new Handler();
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        refreshListViewWithoutNetworkCall();
+//                    }
+//                }, 500);
+//
+//
+//
+//
+//
+//
+//
+//            }
+//        });
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -236,7 +237,7 @@ public class FragmentHome extends Fragment implements Serializable {
 
                         if(mSwipeRefreshLayout.isRefreshing()) {
                             mSwipeRefreshLayout.setRefreshing(false);
-                            search.setText("");
+//                            search.setText("");
 //                            refreshListView();
                             refreshNetworkCall();
                             refreshListViewWithoutNetworkCall();
@@ -256,7 +257,7 @@ public class FragmentHome extends Fragment implements Serializable {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        search = rootView.findViewById(R.id.search_edit_text);
+//        search = rootView.findViewById(R.id.search_edit_text);
         //search.setOnKeyListener((View.OnKeyListener) this);
         setHomeActivity();
         user = homeActivity.getUserdata();

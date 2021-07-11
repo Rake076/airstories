@@ -147,6 +147,7 @@ public class FragmentWriting extends Fragment implements Serializable, AdapterVi
             type_dropdown = rootView.findViewById(R.id.type_spinner);
             genre_dropdown = rootView.findViewById(R.id.genre_spinner);
             genre_dropdown.setOnItemSelectedListener(this);
+            type_dropdown.setOnItemSelectedListener(this);
 
 
 
@@ -166,6 +167,26 @@ public class FragmentWriting extends Fragment implements Serializable, AdapterVi
             type_dropdown.setAdapter(type_adapter);
 
 
+//            type_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                @Override
+//                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                    type = type_dropdown.getSelectedItem().toString();
+//
+//                    if (type.equals(types[i])){
+//                        intent = new Intent(getContext(), WritingShortActivity.class);
+//                    }
+//                    if (type.equals(types[i])){
+//                        intent = new Intent(getContext(), WritingStoryActivity.class);
+//                    }
+//                }
+//
+//                @Override
+//                public void onNothingSelected(AdapterView<?> adapterView) {
+////                        type = type_dropdown.getSelectedItem().toString();
+//                    intent = new Intent(getContext(), WritingShortActivity.class);
+//
+//                }
+//            });
 
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,26 +210,26 @@ public class FragmentWriting extends Fragment implements Serializable, AdapterVi
                 title = title_edit_text.getText().toString();
                 description = description_edit_text.getText().toString();
 
+                intent = new Intent(getContext(), WritingShortActivity.class);
 
-                type_dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        type = type_dropdown.getSelectedItem().toString();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-                        type = type_dropdown.getSelectedItem().toString();
-                    }
-                });
-
-
-                if (type == "Short"){
+                type = type_dropdown.getSelectedItem().toString();
+                if (type.equals("Short")){
                     intent = new Intent(getContext(), WritingShortActivity.class);
                 }
-                else if (type == "Complete"){
+                if (type.equals("Complete")){
                     intent = new Intent(getContext(), WritingStoryActivity.class);
                 }
+
+//                type = "Short";
+
+
+
+//                if (type.equals("Short")){
+//                    intent = new Intent(getContext(), WritingShortActivity.class);
+//                }
+//                if (type.equals("Complete")){
+//                    intent = new Intent(getContext(), WritingStoryActivity.class);
+//                }
 
                 intent.putExtra("genre", genre);
                 intent.putExtra("title", title);
@@ -304,13 +325,12 @@ public class FragmentWriting extends Fragment implements Serializable, AdapterVi
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 //            genre = genres[genre_dropdown.getSelectedItemPosition()];
         genre = (String) genre_dropdown.getSelectedItem();
-        type = (String) type_dropdown.getSelectedItem();
-        Log.v("Dropdown", genre + "222");
+//        type = (String) type_dropdown.getSelectedItem();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-        type = (String) type_dropdown.getSelectedItem();
+//        type = (String) type_dropdown.getSelectedItem();
         genre = (String) genre_dropdown.getSelectedItem();
     }
 }

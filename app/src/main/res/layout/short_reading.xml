@@ -63,12 +63,12 @@
                 android:id="@+id/comment_btn"
                 android:src="@drawable/ic_baseline_mode_comment_24"/>
 
-<!--            <ImageView-->
-<!--                android:layout_width="60dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:layout_height="60dp"-->
-<!--                android:layout_toRightOf="@id/like_btn"-->
-<!--                android:src="@drawable/clown"/>-->
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_weight="1"
+                android:id="@+id/report_btn"
+                android:src="@drawable/ic_baseline_report_24"/>
 
 
         </LinearLayout>

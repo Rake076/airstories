@@ -178,6 +178,7 @@ public class FragmentStories extends Fragment implements Serializable {
                 return false;
             }
         });
+
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -217,12 +218,6 @@ public class FragmentStories extends Fragment implements Serializable {
                         refreshListViewWithoutNetworkCall();
                     }
                 }, 500);
-
-
-
-
-
-
 
             }
         });

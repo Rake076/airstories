@@ -1,10 +1,15 @@
 package com.example.android.air_stories;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -30,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.android.air_stories.Model.ShortStories;
 import com.example.android.air_stories.Model.Stories;
@@ -40,6 +46,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -61,6 +71,11 @@ public class StoryChaptersActivity extends AppCompatActivity {
 
     final ArrayList<Chapters> chaptersObject = new ArrayList<>();
 
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    Retrofit retrofit = RetrofitClient.getInstance();
+    INodeJS myAPI = retrofit.create(INodeJS.class);
+
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,15 +87,73 @@ public class StoryChaptersActivity extends AppCompatActivity {
         Stories story = (Stories) intent.getSerializableExtra("story");
         story_id = story.getStory_id();
         listView = findViewById(R.id.chapter_listview);
+        mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_chapters);
         networkCall();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                Intent intent = new Intent(getApplicationContext(), ChapterEditActivity.class);
-//                intent.putExtra("story", story);
-////                intent.putExtra("chapter", chaptersObject.get(position));
-//                startActivity(intent);
+                String[] options = {"Edit", "Delete"};
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(StoryChaptersActivity.this);
+                builder.setTitle("Options");
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // the user clicked on colors[which]
+
+                        if("Edit".equals(options[which])){
+                            Intent intent = new Intent(getApplicationContext(), ChapterEditActivity.class);
+                            intent.putExtra("chapter", chaptersObject.get(position));
+                            startActivity(intent);
+                        }
+                        else if ("Delete".equals(options[which])){
+                            deleteChapters(chaptersObject.get(position).getChapter_id());
+                            chaptersObject.remove(position);
+                            adapter = new AdapterChapter(getApplicationContext(), chaptersObject);
+                            listView.setAdapter(adapter);
+                        }
+
+                    }
+                });
+                builder.show();
+            }
+        });
+
+
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+                if (listView.getChildAt(0) != null) {
+                    mSwipeRefreshLayout.setEnabled(listView.getFirstVisiblePosition() == 0 && listView.getChildAt(0).getTop() == 0);
+                }
+            }
+        });
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if(mSwipeRefreshLayout.isRefreshing()) {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                            networkCall();
+                        }
+                    }
+                }, 1000);
+
+
+
+
             }
         });
 
@@ -96,6 +169,23 @@ public class StoryChaptersActivity extends AppCompatActivity {
 
     }
 
+    public void deleteChapters(int chapter_id){
+        compositeDisposable.add(myAPI.deleteChapters(chapter_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                               @Override
+                               public void accept(String s) throws Exception {
+//                                   if (s.contains("liked")) {
+//                                       Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+//                                   } else {
+//                                       Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+//                                   }
+                                   Toast.makeText(getApplicationContext(), "Chapter deleted successfully", Toast.LENGTH_SHORT).show();
+                               }
+                           }
+                ));
+    }
 
 
     public void networkCall() {
@@ -111,6 +201,7 @@ public class StoryChaptersActivity extends AppCompatActivity {
 
                 List<Chapters> chapters= response.body();
 
+                chaptersObject.clear();
                 for (Chapters Chapter : chapters) {
                     chaptersObject.add(new Chapters(Chapter.getChapter_id(), Chapter.getStory_id(),
                             Chapter.getChapter_name(), Chapter.getChapter_text(), Chapter.getStatus()));

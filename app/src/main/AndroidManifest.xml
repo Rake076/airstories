@@ -10,7 +10,7 @@
     <application
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/air_stories_round"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -167,6 +167,11 @@
 
         <activity
             android:name=".RecommendationsActivity"
+            android:theme="@style/Theme.Airstories.NoActionBar">
+        </activity>
+
+        <activity
+            android:name=".ReportActivity"
             android:theme="@style/Theme.Airstories.NoActionBar">
         </activity>
 
