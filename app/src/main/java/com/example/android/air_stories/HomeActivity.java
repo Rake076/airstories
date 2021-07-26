@@ -119,15 +119,11 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
         searchEditText = findViewById(R.id.search_edit_text);
 //        textView = findViewById(R.id.short_data_textview);
 
-
-
-
         try {
             setUserData(SaveSharedPreference.getJSONString(HomeActivity.this));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
 
 //        networkCall();
         BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
@@ -142,7 +138,6 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
             openFragment(R.id.fragment_layout, FragmentHome.newInstance("", ""), "HomeFrag");
             globalTag = "HomeFrag";
         }
-
     }
 
     public void shortNetworkCall() {
@@ -157,10 +152,8 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
                 }
 
                 List<ShortStories> stories = response.body();
-
                 shortStoryObject.clear();
                 for (ShortStories Stories : stories) {
-
                     shortStoryObject.add(new ShortStories(Stories.getshortID(), Stories.getShortTitle(),
                             Stories.getShortStory(), Stories.getShortGenre(), Stories.getAppCount(), Stories.getShortDescription(), Stories.getUsername(), Stories.getCoverImage()));
 //                    textView.append(data);
@@ -168,11 +161,7 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
             }
 
             @Override
-            public void onFailure(Call<List<ShortStories>> call, Throwable t) {
-
-
-            }
-
+            public void onFailure(Call<List<ShortStories>> call, Throwable t) {            }
         });
     }
 
@@ -216,28 +205,15 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
 
                 StoryObject.clear();
                 for (Stories Stories : stories) {
-
-//                    int story_id, String story_title, String story_description, String story_genre, int status,
-//                    int likes, int readings, int chapters, String username, String coverImage
-
                     StoryObject.add(new Stories(Stories.getStory_id(), Stories.getStory_title(),
                             Stories.getStory_description(), Stories.getStory_genre(), Stories.getStatus(),
                             Stories.getLikes(), Stories.getReadings(), Stories.getChapters(), Stories.getUsername(), Stories.getCoverImage()));
-//                    textView.append(data);
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Stories>> call, Throwable t) {
-
-            }
-
-
-
+            public void onFailure(Call<List<Stories>> call, Throwable t) {   }
         });
-
-
-
     }
 
 
@@ -256,22 +232,15 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
 
                 List<ShortStories> stories = response.body();
                 shortStoryObject.clear();
-
                 for (ShortStories Stories : stories) {
                     shortStoryObject.add(new ShortStories(Stories.getshortID(), Stories.getShortTitle(),
                             Stories.getShortStory(), Stories.getShortGenre(), Stories.getAppCount(),
                             Stories.getShortDescription(), Stories.getUsername(), Stories.getCoverImage()));
                     Log.v("shortID", ""+Stories.getshortID());
-//                    textView.append(data);
                 }
             }
-
             @Override
-            public void onFailure(Call<List<ShortStories>> call, Throwable t) {
-
-
-            }
-
+            public void onFailure(Call<List<ShortStories>> call, Throwable t) {            }
         });
     }
 
@@ -288,21 +257,17 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
                 }
 
                 List<Stories> stories = response.body();
-
                 StoryObject.clear();
                 for (Stories Stories : stories) {
 
                     StoryObject.add(new Stories(Stories.getStory_id(), Stories.getStory_title(),
                             Stories.getStory_description(), Stories.getStory_genre(), Stories.getStatus(),
                             Stories.getLikes(), Stories.getReadings(), Stories.getChapters(), Stories.getUsername(), Stories.getCoverImage()));
-//                    textView.append(data);
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Stories>> call, Throwable t) {
-
-            }
+            public void onFailure(Call<List<Stories>> call, Throwable t) {}
         });
     }
 
@@ -363,16 +328,11 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
                     shortStoryObject.add(new ShortStories(Stories.getshortID(), Stories.getShortTitle(),
                             Stories.getShortStory(), Stories.getShortGenre(), Stories.getAppCount(),
                             Stories.getShortDescription(), Stories.getUsername(), Stories.getCoverImage()));
-//                    textView.append(data);
                 }
             }
 
             @Override
-            public void onFailure(Call<List<ShortStories>> call, Throwable t) {
-
-
-            }
-
+            public void onFailure(Call<List<ShortStories>> call, Throwable t) {     }
         });
     }
 
@@ -396,16 +356,11 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
                     shortStoryObject.add(new ShortStories(Stories.getshortID(), Stories.getShortTitle(),
                             Stories.getShortStory(), Stories.getShortGenre(), Stories.getAppCount(),
                             Stories.getShortDescription(), Stories.getUsername(), Stories.getCoverImage()));
-//                    textView.append(data);
                 }
             }
 
             @Override
-            public void onFailure(Call<List<ShortStories>> call, Throwable t) {
-
-
-            }
-
+            public void onFailure(Call<List<ShortStories>> call, Throwable t) {  }
         });
     }
 
@@ -424,14 +379,9 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
 
                 StoryObject.clear();
                 for (Stories Stories : stories) {
-
-//                    int story_id, String story_title, String story_description, String story_genre, int status,
-//                    int likes, int readings, int chapters, String username, String coverImage
-
                     StoryObject.add(new Stories(Stories.getStory_id(), Stories.getStory_title(),
                             Stories.getStory_description(), Stories.getStory_genre(), Stories.getStatus(),
                             Stories.getLikes(), Stories.getReadings(), Stories.getChapters(), Stories.getUsername(), Stories.getCoverImage()));
-//                    textView.append(data);
                 }
             }
 
@@ -440,8 +390,6 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
             }
         });
     }
-
-
     public void storyGenreSearch(String storyGenre) {
         storyListCall = jsonPlaceHolderApi.getStoriesGenre(storyGenre);
         storyListCall.enqueue(new Callback<List<Stories>>() {
@@ -457,10 +405,6 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
 
                 StoryObject.clear();
                 for (Stories Stories : stories) {
-
-//                    int story_id, String story_title, String story_description, String story_genre, int status,
-//                    int likes, int readings, int chapters, String username, String coverImage
-
                     StoryObject.add(new Stories(Stories.getStory_id(), Stories.getStory_title(),
                             Stories.getStory_description(), Stories.getStory_genre(), Stories.getStatus(),
                             Stories.getLikes(), Stories.getReadings(), Stories.getChapters(), Stories.getUsername(), Stories.getCoverImage()));
@@ -473,7 +417,6 @@ public class HomeActivity extends AppCompatActivity/* implements StoriesFragment
             }
         });
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
