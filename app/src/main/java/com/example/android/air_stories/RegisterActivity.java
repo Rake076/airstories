@@ -75,8 +75,9 @@ public class RegisterActivity extends AppCompatActivity {
                                 !edit_username_register.getText().toString().isEmpty() &&
                                 !edit_password_register.getText().toString().isEmpty() ){
 
-                    if(edit_email_register.getText().toString().contains("@")){
-
+                    String email = edit_email_register.getText().toString();
+                    if(email.contains("@") && email.matches(".*[A-Za-z]*.") && email.contains(".com")){
+ 
                         if(edit_password_register.getText().toString().length()<8){
                             edit_password_register.setError("Password must be at last 8 characters");
                         }

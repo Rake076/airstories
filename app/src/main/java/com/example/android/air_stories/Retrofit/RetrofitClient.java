@@ -16,8 +16,7 @@ public class RetrofitClient {
     private static Retrofit instance;
     private INodeJS myApi;
     private static Retrofit retrofit = null;
-    final static String BASE_URL = "http://192.168.18.201:5000/";
-
+    final static String BASE_URL = "http://192.168.247.157:5000/";
 
 
 
@@ -33,8 +32,6 @@ public class RetrofitClient {
 
         return instance;
     }
-
-
 
     public static Retrofit getClient() {
         if (retrofit == null) {
